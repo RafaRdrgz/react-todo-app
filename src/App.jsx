@@ -1,11 +1,15 @@
 import { useState } from 'react';
 import Login from './components/Login';
+import { useEffect } from "react";
+
 //import TodoList from './components/TodoList';
 //import TodoForm from './components/TodoForm';
 
 const App = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [user, setUser] = useState(null);
+
+//Estados necesarios para el login
+  const [isLoggedIn, setIsLoggedIn] = useState(false); //booleanos para setear si el usuario está logueado y para preguntar si hay algun usuario logueado
+  const [user, setUser] = useState(null); //Estados para manejar los datos del usuario y para establecer un usuario como logueado
 
   // Función que maneja el login
   const handleLogin = (userData) => {
@@ -18,6 +22,10 @@ const App = () => {
     setUser(null);
     setIsLoggedIn(false);
   };
+
+  useEffect(() => {
+    document.title = "React To-Do App"; // Cambia el título de la pestaña
+  }, []);
 
   return (
     <div className="App">
