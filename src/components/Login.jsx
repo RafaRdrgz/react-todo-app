@@ -10,8 +10,12 @@ const Login = () => {
   };
 
   return (
-    <div>
+    <div className='flex flex-col'>
+
+
       <h2>Iniciar sesión</h2>
+
+      <div>
       <form onSubmit={handleLogin}>
         <input
           type="email"
@@ -27,8 +31,10 @@ const Login = () => {
         />
         <button type="submit">Iniciar sesión</button>
       </form>
+
+      </div>
     </div>
   );
 };
 
-export default Login;  {/* Exportación por defecto */}
+export default Login;

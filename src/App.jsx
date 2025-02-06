@@ -1,6 +1,11 @@
 import { useState } from 'react';
-import Login from './components/Login';
 import { useEffect } from "react";
+import Header from './components/Header';
+import Footer from './components/Footer';
+import Login from './components/Login';
+//import TodoList from './components/TodoList';
+
+
 
 //import TodoList from './components/TodoList';
 //import TodoForm from './components/TodoForm';
@@ -29,17 +34,29 @@ const App = () => {
 
   return (
     <div className="App">
+
+      <Header isLoggedIn={isLoggedIn} user={user}/>
+
       {isLoggedIn ? (
-        <div>
-          <h1>Bienvenido, {user.email}!</h1>
-          <button onClick={handleLogout}>Cerrar sesión</button>
-          {/* Aquí mostraríamos la lista de tareas y el formulario */}
-          <TodoList />
-          <TodoForm />
-        </div>
-      ) : (
-        <Login onLogin={handleLogin} />
-      )}
+
+        
+          <div>
+            {/* 
+              <TodoList />
+              <TodoForm />
+            */}
+          </div>
+
+        ) : (
+
+          <Login onLogin={handleLogin} />
+          
+        )
+      
+      }
+
+
+      <Footer isLoggedIn={isLoggedIn}/>
     </div>
   );
 };
