@@ -35,28 +35,44 @@ const App = () => {
   return (
     <div className="App">
 
-      <Header isLoggedIn={isLoggedIn} user={user}/>
+      <div className='contenedor flex flex-col min-h-screen'>
 
-      {isLoggedIn ? (
-
-        
-          <div>
-            {/* 
-              <TodoList />
-              <TodoForm />
-            */}
-          </div>
-
-        ) : (
-
-          <Login onLogin={handleLogin} />
-          
-        )
-      
-      }
+        <Header isLoggedIn={isLoggedIn} user={user}/>
 
 
-      <Footer isLoggedIn={isLoggedIn}/>
+        <main className="main flex-1  flex flex-col justify-center items-center py-6 md:py-8 lg:py-10 xl:py-12 px-4 md:px-8 lg:px-12 xl:px-16">
+
+
+          {isLoggedIn ? (
+
+                      
+            <div>
+              {/* 
+                <TodoList />
+                <TodoForm />
+              */}
+            </div>
+
+          ) : (
+
+            <Login onLogin={handleLogin} />
+
+            )
+
+          }
+
+        </main>
+
+
+
+
+        <Footer isLoggedIn={isLoggedIn}/>
+
+
+
+      </div>
+
+
     </div>
   );
 };

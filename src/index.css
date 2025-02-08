@@ -1,11 +1,4 @@
-/* Reset de estilos */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-/*tailwind css*/
+  /*tailwind css*/
 @import "tailwindcss";
 
 
@@ -49,8 +42,32 @@
   }
   
 
+/** Clases propias */
+
 
 .header{
 
     background-color: var(--dark-violet);
+}
+
+.main{
+
+    background-color: var(--rose-quartz);
+}
+
+.login{
+
+  background-color: var(--white);
+
+}
+
+.login-btn{
+
+  background-color: var(--mint-green-2);
+}
+
+.login-btn:hover{
+
+  background-color: var(--mint-green);
+  cursor: pointer;
 }
