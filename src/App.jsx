@@ -51,6 +51,7 @@ const App = () => {
                 <TodoList />
                 <TodoForm />
               */}
+
             </div>
 
           ) : (
@@ -66,7 +67,7 @@ const App = () => {
 
 
 
-        <Footer isLoggedIn={isLoggedIn}/>
+        <Footer isLoggedIn={isLoggedIn} handleLogout={handleLogout}/>
 
 
 
