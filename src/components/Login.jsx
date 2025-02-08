@@ -1,17 +1,23 @@
 import { useState } from 'react';
 import { useEffect } from "react";
+import PropTypes from 'prop-types'; //desestructurar objetos prop
 
 
-const Login = () => {
+const Login = ( { handleLogin } ) => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = () => {
-    // Login with email and password
-    console.log(email, password);
-  };
+  console.log("handleLogin en Login.jsx:", handleLogin);
 
+  const handleSubmit = (event) => {
+    event.preventDefault(); // ✅ Evita recarga
+    if (handleLogin) {
+      handleLogin(); // ✅ Llamar solo si está definido
+    } else {
+      console.error("Error: Error de submit");
+    }
+  };
 
   /* Sign in with google */
 
@@ -51,7 +57,7 @@ const Login = () => {
 
           <h2 className='ubuntu-bold text-xl text-center mb-8'>Login:</h2>
 
-          <form className='login-form flex flex-col' onSubmit={handleLogin}>
+          <form className='login-form flex flex-col' onSubmit={handleSubmit}>
 
               <div className='login-inputs mb-8 flex flex-col justify-center items-center'>
 
@@ -120,6 +126,12 @@ const Login = () => {
       </div>
 
   );
+};
+
+Login.propTypes = {
+
+  handleLogin: PropTypes.func.isRequired,
+  
 };
 
 export default Login;
