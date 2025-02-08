@@ -1,13 +1,12 @@
 import PropTypes from 'prop-types'; //desestructurar objetos prop
 
 
-const Footer = ( {isLoggedIn}) => {
+const Footer = ( {isLoggedIn, handleLogout}) => {
 
     return ( isLoggedIn ? (
         
-
         <footer id='footer' className="header h-8 md:h-12 lg:h-18 flex justify-between items-center">
-
+          <button  className="login-btn p-4 border-2 rounded-xl ubuntu-medium text-lg" onClick={handleLogout}>Logout</button>
         </footer>
 
       ) : (
@@ -27,8 +26,14 @@ const Footer = ( {isLoggedIn}) => {
 
 Footer.propTypes = {
 
-  isLoggedIn: PropTypes.bool.isRequired
+  isLoggedIn: PropTypes.bool.isRequired,
+  handleLogout: PropTypes.func
   
+};
+
+Footer.defaultProps = {
+  isLoggedIn: false,
+  handleLogout: null
 };
 
 export default Footer;

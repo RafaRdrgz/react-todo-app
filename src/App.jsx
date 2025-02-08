@@ -1,14 +1,10 @@
 import { useState } from 'react';
 import { useEffect } from "react";
 import Header from './components/Header';
-import Footer from './components/Footer';
 import Login from './components/Login';
-//import TodoList from './components/TodoList';
+import Dashboard from './components/Dashboard';
+import Footer from './components/Footer';
 
-
-
-//import TodoList from './components/TodoList';
-//import TodoForm from './components/TodoForm';
 
 const App = () => {
 
@@ -32,48 +28,25 @@ const App = () => {
     document.title = "React To-Do App"; // Cambia el título de la pestaña
   }, []);
 
+
+  //Componentes que se van a renderizar
+  const headerComponent = <Header isLoggedIn={isLoggedIn} user={user} />; //Por defecto false y null
+  const mainContent = isLoggedIn ? <Dashboard isLoggedIn={isLoggedIn} user={user} /> : <Login onLogin={handleLogin} />; // Por defecto false y null
+  const footerComponent = <Footer isLoggedIn={isLoggedIn} handleLogout={handleLogout} />; //Por defecto false y null
+
   return (
     <div className="App">
-
       <div className='contenedor flex flex-col min-h-screen'>
 
-        <Header isLoggedIn={isLoggedIn} user={user}/>
+        {headerComponent}
 
-
-        <main className="main flex-1  flex flex-col justify-center items-center py-6 md:py-8 lg:py-10 xl:py-12 px-4 md:px-8 lg:px-12 xl:px-16">
-
-
-          {isLoggedIn ? (
-
-                      
-            <div>
-              {/* 
-                <TodoList />
-                <TodoForm />
-              */}
-
-            </div>
-
-          ) : (
-
-            <Login onLogin={handleLogin} />
-
-            )
-
-          }
-
+        <main className="main flex-1 flex flex-col justify-center items-center py-6 md:py-8 lg:py-10 xl:py-12 px-4 md:px-8 lg:px-12 xl:px-16">
+          {mainContent}
         </main>
 
-
-
-
-        <Footer isLoggedIn={isLoggedIn} handleLogout={handleLogout}/>
-
-
-
+        {footerComponent}
+        
       </div>
-
-
     </div>
   );
 };

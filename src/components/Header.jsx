@@ -1,5 +1,7 @@
+import PropTypes from 'prop-types'; //desestructurar objetos prop
 
-const Header = (isLoggedIn, user) => {
+
+const Header = ({isLoggedIn, user}) => {
 
 
     return ( isLoggedIn && user ? (
@@ -24,5 +26,19 @@ const Header = (isLoggedIn, user) => {
 
     )
 }
+
+Header.propTypes = {
+
+  isLoggedIn: PropTypes.bool.isRequired,
+  user: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+  })
+  
+};
+
+Header.defaultProps = {
+  isLoggedIn: false,
+  user: null,
+};
 
 export default Header;

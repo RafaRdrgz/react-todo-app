@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useEffect } from "react";
+
 
 const Login = () => {
 
@@ -6,9 +8,42 @@ const Login = () => {
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
-    // Implementar la lógica de login
+    // Login with email and password
     console.log(email, password);
   };
+
+
+  /* Sign in with google */
+
+  useEffect(() => {
+
+    // Esperar a que Google cargue antes de usarlo
+    const initializeGoogleLogin = () => {
+
+      if (window.google) {
+        window.google.accounts.id.initialize({
+          client_id: "TU_CLIENT_ID_AQUÍ", // Reemplázalo cuando tengas uno
+          callback: (response) => console.log("ID Token de Google:", response.credential),
+        });
+
+        window.google.accounts.id.renderButton(
+          document.getElementById("google-login-button"),
+          { theme: "filled_black", size: "large", text: "signin_with", locale: "en" }
+        );
+      }
+    };
+
+    // Verificar si Google ya está disponible
+    if (window.google) {
+          initializeGoogleLogin();
+        } else {
+          // Esperar a que se cargue el script
+          window.addEventListener("load", initializeGoogleLogin);
+          return () => window.removeEventListener("load", initializeGoogleLogin);
+        }
+      }, []);
+
+
 
   return (
 
@@ -59,9 +94,27 @@ const Login = () => {
 
               </div>
 
-              <div className='login-inpu flex justify-center items-center'>
+              <div className='login-inpu flex justify-center items-center mb-4 md:mb-6'>
                 <button  className="login-btn p-4 border-2 rounded-xl  ubuntu-medium text-lg"type="submit">Login</button>
               </div>
+
+              <h2 className='ubuntu-bold text-xl text-center mb-4 md:mb-6'>Or:</h2>
+
+              
+              <div id="google-login-button" className="g_id_signin"></div>
+
+            { /**
+              <script>
+                function handleCredentialResponse(response) {
+
+                    console.log("ID Token de Google: " + response.credential)
+                    // Aquí podrías manejar la respuesta más adelante en tu backend con Node.js
+                }
+              </script>
+               */
+            }
+
+            
           </form>
 
       </div>
