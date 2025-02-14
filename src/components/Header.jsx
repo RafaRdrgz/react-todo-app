@@ -7,11 +7,11 @@ const Header = ({isLoggedIn, user}) => {
     return ( isLoggedIn && user ? (
 
 
-        <header id='loginHeader' className="header h-10 md:h-14 lg:h-18 flex justify-between items-center">
+        <header id='loginHeader' className="header h-10 md:h-14 lg:h-18 flex justify-around items-center">
           <h1 className='ubuntu-bold text-white text-2xl'>
-            <a href='./'>To-Do App</a>
+            <p>To-Do App</p>
           </h1>
-          <h1 className='ubuntu-bold text-white text-xl'>Bienvenido, {user.name}</h1>
+          <p className='ubuntu-bold text-white text-xl'>Welcome, {user.name} !</p>
         </header>
 
       ) : (

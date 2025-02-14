@@ -1,11 +1,20 @@
+
 import PropTypes from 'prop-types';
+import TodoForm from './TodoForm.jsx';
+
+
+
 
 const Dashboard = ({ user }) => {
 
+
     return (
-      <div>
-        {user.name}
-      </div>
+      <main className='dashboard rounded-xl shadow-lg py-2 md:py-6 lg:py-10 px-8 md:px-16 lg:px-20'>
+        <h2 className='ubuntu-bold text-xl text-center mb-8'>{user.name }&apos;s Dashboard</h2>
+
+        <TodoForm user={user}/>
+        
+      </main>
     );
 
 };

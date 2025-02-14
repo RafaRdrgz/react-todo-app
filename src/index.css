@@ -13,6 +13,11 @@
 --dark-magenta: #820b8aff;
 --dark-violet: #672a4eff;
 --white: #ffffffff;
+--color-completed-bg: #a8e6cf; /* Verde pastel */
+--color-pending-bg: #ffdd94; /* Naranja pastel */
+--color-completed-btn: #4CAF50; /* Verde oscuro */
+--color-pending-btn: #d35400; /* Naranja oscuro */
+--color-checkbox-completed: #4CAF50; /* Verde claro */
 }
 
 /** Google Fonts **/
@@ -45,7 +50,7 @@
 /** Clases propias */
 
 
-.header{
+.header, .footer{
 
     background-color: var(--dark-violet);
 }
@@ -61,13 +66,64 @@
 
 }
 
-.login-btn{
+.login-btn, .logout-btn{
 
   background-color: var(--mint-green-2);
 }
 
-.login-btn:hover{
+.login-btn:hover, .logout-btn:hover{
 
   background-color: var(--mint-green);
+  cursor: pointer;
+}
+
+.dashboard{
+
+  background-color: var(--white);
+}
+
+/* Estilo para tareas completadas */
+.completed {
+  background-color: var(--color-completed-bg);
+
+}
+
+/* Estilo para tareas pendientes */
+.pending {
+  background-color: var(--color-pending-bg);
+}
+
+.task-info{
+  background-color: var(--white);
+}
+
+.date{
+  color: gray;
+}
+
+.checkbox-completed{
+  accent-color: var(--color-checkbox-completed);
+  cursor: pointer;
+}
+
+.btn-completed{
+  background-color: var(--color-completed-btn);
+  color: var(--white);
+}
+
+.btn-pending{
+  background-color: var(--color-pending-btn);
+  color: var(--white)
+}
+
+
+.delete{
+  background-color: gray;
+  color: var(--white);
+}
+
+
+.delete:hover{
+  background-color: red;
   cursor: pointer;
 }

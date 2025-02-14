@@ -53,7 +53,7 @@ const Login = ( { handleLogin } ) => {
 
   return (
 
-      <div className='login rounded-xl flex flex-col py-4 md:py-12 lg:py-16 px-8 md:px-16 lg:px-20'>
+      <div className='login flex flex-col rounded-xl shadow-lg py-4 md:py-12 lg:py-16 px-8 md:px-16 lg:px-20'>
 
           <h2 className='ubuntu-bold text-xl text-center mb-8'>Login:</h2>
 
