@@ -6,7 +6,7 @@ const TodoItem = ({ task, onDelete }) => {
   const [completed, setCompleted] = useState(task.completed);
 
   const toggleComplete = () => {
-    setCompleted(!completed); //Modifica el estado completed
+    setCompleted(!completed);
   };
 
   return (
@@ -54,6 +54,7 @@ TodoItem.propTypes = {
     completed: PropTypes.bool.isRequired,
     createdAt: PropTypes.string.isRequired,
   }).isRequired,
+  onDelete: PropTypes.func.isRequired
 };
 
 export default TodoItem;
