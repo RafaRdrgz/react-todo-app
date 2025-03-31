@@ -50,7 +50,10 @@ const fakeTasks = [
 
 const TodoList = ({ user }) => {
     const [tasks, setTasks] = useState([]); // Estado para almacenar las tareas
-    const [loading, setLoading] = useState(true); 
+    const [loading, setLoading] = useState(true);
+
+    const [searchTerm, setSearchTerm] = useState("");  // Estado para la búsqueda
+    const [filter, setFilter] = useState("all");  // Estado para el filtro (completado o pendiente)
 
 
 
@@ -104,21 +107,80 @@ const TodoList = ({ user }) => {
         setTasks((prevTasks) => prevTasks.filter(task => task.id !== taskId));
     };
 
-    
+
+    // Filtrar tareas según el searchTerm y el filtro de estado
+    const filteredTasks = tasks.filter((task) => {
+      
+      // Filtro por búsqueda en el título
+      const matchesSearch = task.title.toLowerCase().includes(searchTerm.toLowerCase());
+      
+      // Filtro por estado: "all", "completed" o "pending"
+      const matchesFilter = filter === "all" || (filter === "completed" && task.completed) || (filter === "pending" && !task.completed);
+      
+      return matchesSearch && matchesFilter;
+    });
+
+
+    //Cmbiar el término de búsqueda
+    const handleSearchChange = (e) => {
+      setSearchTerm(e.target.value);
+    };
+
+    //Cambiar el filtro de búsqueda
+    const handleFilterChange = (e) => {
+      setFilter(e.target.value);
+    };
+
     return (
-        <div>
+
+      <div>
+
+          <div className="filters mb-4">
+            {/* Campo de búsqueda */}
+            <input
+              type="text"
+              placeholder="Buscar tarea..."
+              value={searchTerm}
+              onChange={handleSearchChange}
+              className="border p-2 rounded w-full"
+            />
+
+            {/* Filtro por estado */}
+            <select
+              value={filter}
+              onChange={handleFilterChange}
+              className="border p-2 rounded mt-2 w-full"
+            >
+              <option value="all">Todas</option>
+              <option value="completed">Completadas</option>
+              <option value="pending">Pendientes</option>
+            </select>
+          </div>
+
+
+
+
+          <div className='tasklist'>
+            {/* Mostrar mensaje de carga */}
             {loading ? (
-                <p>Loading Tasks...</p>
-
-            ) : tasks.length > 0 ? (
-
-                tasks.map((task) => <TodoItem key={task.id} task={task} onDelete={handleDelete} onEdit={handleEdit}/>
-            )
-
+              <p>Loading Tasks...</p>
             ) : (
-                <p>Any task registered.</p>
+              // Mostrar la lista de tareas si hay tareas
+              <>
+                {/* Mostrar las tareas filtradas */}
+                {filteredTasks.length > 0 ? (
+                  filteredTasks.map((task) => (
+                    <TodoItem key={task.id} task={task} onDelete={handleDelete} onEdit={handleEdit} />
+                  ))
+                ) : (
+                  <p>No hay tareas para mostrar</p>
+                )}
+              </>
             )}
           </div>
+
+
+      </div>
     );
 
 };
