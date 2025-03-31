@@ -8,16 +8,11 @@ const Login = ( { handleLogin } ) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  console.log("handleLogin en Login.jsx:", handleLogin);
-
   const handleSubmit = (event) => {
-    event.preventDefault(); // ✅ Evita recarga
-    if (handleLogin) {
-      handleLogin(); // ✅ Llamar solo si está definido
-    } else {
-      console.error("Error: Error de submit");
-    }
+    event.preventDefault();
+    handleLogin(email, password); // Llamamos a handleLogin con los datos del formulario
   };
+
 
   /* Sign in with google */
 

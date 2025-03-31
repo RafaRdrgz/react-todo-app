@@ -4,14 +4,8 @@ import Header from './components/Header';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import Footer from './components/Footer';
+import { handleLogin as loginService, handleLogout as logoutService } from './services/authService';
 
-  //usuario falso para pruebas
-  const fakeUser = {
-    id: "123456789",
-    name: "Juan Pérez",
-    email: "juanperez@example.com",
-    picture: "https://via.placeholder.com/150", // Foto de perfil de prueba
-  };
 
 const App = () => {
 
@@ -19,28 +13,33 @@ const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false); //booleanos para setear si el usuario está logueado y para preguntar si hay algun usuario logueado
   const [user, setUser] = useState(null); //Estados para manejar los datos del usuario y para establecer un usuario como logueado
 
+
   // Función que maneja el login
+  const handleLogin = async (email, password) => {
+    try {
+      const userData = await loginService(email, password); // Usamos la función del servicio
+      setUser(userData); // Guardamos los datos del usuario
+      setIsLoggedIn(true); // Marcamos al usuario como logueado
+    } catch (error) {
+      alert(error.message);
+    }
+  };
 
-  /**
-  const handleLogin = (userData) => {
-    setUser(userData);        // Guardamos los datos del usuario
-    setIsLoggedIn(true);       // Marcamos que el usuario está logueado
-  };
- */
+// Función que maneja el logout
+const handleLogout = () => {
+  setUser(logoutService()); // Limpiamos el estado de usuario
+  setIsLoggedIn(false);
+ };
 
-  //Login de prueba
-  const handleLogin = () => {
-    console.log("Iniciando sesión con usuario de prueba...");
-    setUser(fakeUser);
-    setIsLoggedIn(true);
-  };
-  // Función que maneja el logout
-  const handleLogout = () => {
-    setUser(null);
-    setIsLoggedIn(false);
-  };
 
   useEffect(() => {
+
+    // Verificamos si el token está en el localStorage al cargar la aplicación
+    const token = localStorage.getItem('token');
+    if (token) {
+      setIsLoggedIn(true); //En caso de que si, iniciamos sesión
+    }
+
     document.title = "React To-Do App"; // Cambia el título de la pestaña
   }, []);
 
