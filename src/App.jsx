@@ -49,7 +49,6 @@ const handleLogout = () => {
   const footerComponent = <Footer isLoggedIn={isLoggedIn} handleLogout={handleLogout} />; //Por defecto false y null
 
 
-
   return (
     <div className="App">
       <div className='contenedor flex flex-col min-h-screen'>
@@ -69,28 +68,3 @@ const handleLogout = () => {
 };
 
 export default App;
-
-
-
-/**
- * Explicación de este código:
- * 
- * --- ESTADOS --- 
- * 
- *    Estado isLoggedIn: 
-      Almacena si el usuario está logueado o no. Si es true, se muestra la lista de tareas y el formulario de tareas. 
-      Si es false, muestra la pantalla de login.
-
-      Estado user: Guarda los datos del usuario que inicia sesión (en este caso, solo el correo electrónico y la contraseña)
-
-    --- FUNCIONES ---
-
-      Función handleLogin: Esta función se llama cuando el usuario se loguea correctamente.
-                           Cambia el estado de isLoggedIn a true y guarda los datos del usuario.
-
-
-      Función handleLogout: Permite al usuario cerrar sesión. Restablece isLoggedIn a false y borra los datos del usuario.
-
- * 
- * 
- */
