@@ -117,13 +117,18 @@
 }
 
 
-.delete{
+.delete, .edit, .save, .cancel{
   background-color: gray;
   color: var(--white);
 }
 
 
-.delete:hover{
+.delete:hover, .cancel:hover{
   background-color: red;
+  cursor: pointer;
+}
+
+.edit:hover, .save:hover{
+  background-color: var(--mint-green);
   cursor: pointer;
 }

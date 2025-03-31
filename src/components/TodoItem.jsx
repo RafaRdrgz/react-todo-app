@@ -1,17 +1,36 @@
 import { useState } from "react";
+import { Trash, PencilSimple, FloppyDisk, X } from "@phosphor-icons/react";
 import PropTypes from "prop-types";
 
-const TodoItem = ({ task, onDelete }) => {
+const TodoItem = ({ task, onDelete, onEdit }) => {
 
   const [completed, setCompleted] = useState(task.completed);
+  const [editing, setEditing] = useState(false);
+  const [newTitle, setNewTitle] = useState(task.title);
+  const [newDescription, setNewDescription] = useState(task.description);
 
   const toggleComplete = () => {
     setCompleted(!completed);
   };
 
+  const handleEditClick = () => {
+    setEditing(true); // Activa el modo de edición
+  };
+
+  const handleSaveClick = () => {
+    onEdit(task.id, newTitle, newDescription); // Llama a la función de edición en el padre
+    setEditing(false); // Desactiva el modo de edición
+  };
+
+  const handleCancelEditClick = () => {
+    setEditing(false); // Cancela la edición y vuelve a los datos originales
+    setNewTitle(task.title);
+    setNewDescription(task.description);
+  };
+
   return (
     <div className={`todo-item flex flex-col justify-center p-4 my-2 md:my-4 rounded-lg shadow-md ${completed ? 'completed' : 'pending'}`}>
-      <h4 className="flex justify-around align-center mb-3">
+      <h4 className="flex justify-around align-center mb-3 space-x-4">
         <input
         type="checkbox"
         checked={completed}
@@ -19,27 +38,74 @@ const TodoItem = ({ task, onDelete }) => {
         className={`h-6 w-6 ${completed ? 'checkbox-completed' : 'checkbox-pending'}`}
         />
 
-        <span className="flex-1 text-center ubuntu-medium">{task.title}</span>
+        {editing ? (
+          <div className="flex-1">
+            <input
+              type="text"
+              value={newTitle}
+              onChange={(e) => setNewTitle(e.target.value)}
+              className="border-b-2 border-gray-300 rounded-lg w-full text-center bg-white"
+            />
+          </div>
+        ) : (
+          <span className="flex-1 text-center ubuntu-medium">{task.title}</span>
+        )}
          
       </h4>
       <div className="task-info text-center p-3 rounded-lg mb-3">
-            <p className="ubuntu-light mb-1">{task.description}</p>
-            <p className="date ubuntu-light text-sm">Creado: {task.createdAt}</p>
-
-
+      {editing ? (
+        <textarea
+          value={newDescription}
+          onChange={(e) => setNewDescription(e.target.value)}
+          className="mb-3 p-2 w-full border-2 border-gray-300"
+        />
+      ) : (<>
+          <p className="ubuntu-light mb-1">{task.description}</p>
+          <p className="date ubuntu-light text-sm">Creado: {task.createdAt}</p>
+          </>
+      )}
       </div>
-      <div className="buttons flex justify-around align-center">
+      <div className="buttons flex justify-between items-center">
             <button disabled
-                    className={`px-3 py-1 mx-auto block rounded-sm ${completed ? "btn-completed" : "btn-pending"}`}
+                    className={`px-3 py-1 rounded-sm ${completed ? "btn-completed" : "btn-pending"}`}
                     onClick={toggleComplete}
             >
                 {completed ? "Completada" : "Pendiente"}
             </button>
-            <button className="delete px-3 py-1 mx-auto rounded-sm text-xl hover:rounded-3xl"
-                    onClick={() => onDelete(task.id)}
-            >
-                <i className="ph ph-trash"></i>
-            </button>
+
+            <div className="actions flex space-x-2">
+                  {editing ? (
+                  <>
+                    <button
+                      className="save px-3 py-1 mr-2 rounded-sm text-xl hover:rounded-3xl"
+                      onClick={handleSaveClick}
+                    >
+                      <FloppyDisk size={24} />
+                    </button>
+                    <button
+                      className="cancel px-3 py-1 rounded-sm text-xl hover:rounded-3xl"
+                      onClick={handleCancelEditClick}
+                    >
+                      <X size={24} />
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      className="edit px-3 py-1 mr-2 rounded-sm text-xl hover:rounded-3xl"
+                      onClick={handleEditClick}
+                    >
+                      <PencilSimple size={24} />
+                    </button>
+                    <button
+                      className="delete px-3 py-1 rounded-sm text-xl hover:rounded-3xl"
+                      onClick={() => onDelete(task.id)}
+                    >
+                      <Trash size={24} />
+                    </button>
+                  </>
+                )}
+            </div>
         </div>
     </div>
   );
@@ -54,7 +120,8 @@ TodoItem.propTypes = {
     completed: PropTypes.bool.isRequired,
     createdAt: PropTypes.string.isRequired,
   }).isRequired,
-  onDelete: PropTypes.func.isRequired
+  onDelete: PropTypes.func.isRequired,
+  onEdit: PropTypes.func.isRequired
 };
 
 export default TodoItem;
