@@ -5,7 +5,7 @@ import Header from './components/Header';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import Footer from './components/Footer';
-import { loginService, logoutService } from './services/authService';
+import { loginService, logoutService, refreshTokenService } from './services/authService';
 
 
 const App = () => {
@@ -19,11 +19,12 @@ const App = () => {
   useEffect(() => {
 
     // Verificamos si el token está en el localStorage al cargar la aplicación
-    const token = localStorage.getItem('token');
+    const accessToken = localStorage.getItem('accessToken');
+    const refreshToken = localStorage.getItem('refreshToken');
 
-    if (token) {
+    if (accessToken) {
 
-      const decodedToken = jwt_decode(token);
+      const decodedToken = jwt_decode(accessToken);
 
       if(!isExpired(decodedToken.exp)){ // si el token existe y no ha expirado, establezco los datos del usuario
 
@@ -36,7 +37,21 @@ const App = () => {
         setIsLoggedIn(true); //iniciamos sesión
 
       }
-    }
+
+    } else if (refreshToken){ //Si no hay accessToken pero el
+
+      const newAccessToken = refreshTokenService(refreshToken);
+      const decodedToken = jwt_decode(newAccessToken);
+
+      setUser({
+        id: decodedToken.id,
+        email: decodedToken.email,
+        name: decodedToken.name,
+      });
+
+      setIsLoggedIn(true); //iniciamos sesión
+
+    } // si no se cumple nada, los estados quedan en null y false.
 
     document.title = "React To-Do App"; // Cambia el título de la pestaña
   }, []);
@@ -75,12 +90,16 @@ const isExpired = (exp) => {
 
 
 // Función que maneja el logout
-const handleLogout = () => {
-  setUser(logoutService()); // Limpiamos el estado de usuario
-  setIsLoggedIn(false);
- };
-
-
+const handleLogout = async () => {
+  try {
+  
+    await logoutService(user.id); // Envía la solicitud de logout al backend
+    setUser(null); // Limpia el usuario
+    setIsLoggedIn(false); // Cambia el estado de sesión
+  } catch (error) {
+    console.error('Error al cerrar sesión:', error);
+  }
+};
 
 
   //Componentes que se van a renderizar dependiendo de los estados
