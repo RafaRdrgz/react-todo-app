@@ -3,20 +3,20 @@ import axios from 'axios'; //Peticiones http desce este fichero
 
 
 // Función para manejar el login
-export const handleLogin = async (email, password) => {
+export const loginService = async (email, password) => {
 
   try {
     // Hacemos la solicitud POST al backend para autenticar al usuario
     const response = await axios.post(API_URL_LOGIN, { email, password });
 
     // Obtenemos los datos del usuario y el token de la respuesta
-    const { user, token } = response.data;
+    const { token } = response.data;
 
     // Guardamos el token en el localStorage
     localStorage.setItem('token', token);
 
     // Devolvemos los datos del usuario
-    return user;
+    return token;
 
   } catch (error) {
     
@@ -33,7 +33,7 @@ export const handleLogin = async (email, password) => {
 };
 
 // Función para manejar el logout
-export const handleLogout = () => {
+export const logoutService = () => {
   // Limpiamos el localStorage y el estado de la sesión
   localStorage.removeItem('token');
   return null;

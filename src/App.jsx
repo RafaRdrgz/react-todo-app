@@ -1,10 +1,11 @@
+import jwt_decode from 'jwt-decode';
 import { useState } from 'react';
 import { useEffect } from "react";
 import Header from './components/Header';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import Footer from './components/Footer';
-import { handleLogin as loginService, handleLogout as logoutService } from './services/authService';
+import { loginService, logoutService } from './services/authService';
 
 
 const App = () => {
@@ -14,16 +15,64 @@ const App = () => {
   const [user, setUser] = useState(null); //Estados para manejar los datos del usuario y para establecer un usuario como logueado
 
 
+  //Se ejecuta cuando carga la aplicación y trata de ver si hay alguna sesión iniciada previamente
+  useEffect(() => {
+
+    // Verificamos si el token está en el localStorage al cargar la aplicación
+    const token = localStorage.getItem('token');
+
+    if (token) {
+
+      const decodedToken = jwt_decode(token);
+
+      if(!isExpired(decodedToken.exp)){ // si el token existe y no ha expirado, establezco los datos del usuario
+
+        setUser({
+          id: decodedToken.id,
+          email: decodedToken.email,
+          name: decodedToken.name,
+        });
+
+        setIsLoggedIn(true); //iniciamos sesión
+
+      }
+    }
+
+    document.title = "React To-Do App"; // Cambia el título de la pestaña
+  }, []);
+
+
+
+//Función para ver si el JWT ha expirado
+
+const isExpired = (exp) => {
+
+    const currentTime = Date.now() / 1000; //convierto a segundos
+
+    if(exp < currentTime) { return true } // el token ha expirado
+
+    return false;
+
+ }
+
+
   // Función que maneja el login
   const handleLogin = async (email, password) => {
     try {
-      const userData = await loginService(email, password); // Usamos la función del servicio
-      setUser(userData); // Guardamos los datos del usuario
+      const { token } = await loginService(email, password); // Usamos la función del servicio
+      const decodedToken = jwt_decode(token)
+      setUser({
+        id: decodedToken.id,
+        email: decodedToken.email,
+        name: decodedToken.name,
+      }); // Guardamos los datos del usuario
       setIsLoggedIn(true); // Marcamos al usuario como logueado
     } catch (error) {
       alert(error.message);
     }
   };
+
+
 
 // Función que maneja el logout
 const handleLogout = () => {
@@ -32,18 +81,10 @@ const handleLogout = () => {
  };
 
 
-  useEffect(() => {
 
-    // Verificamos si el token está en el localStorage al cargar la aplicación
-    const token = localStorage.getItem('token');
-    if (token) {
-      setIsLoggedIn(true); //En caso de que si, iniciamos sesión
-    }
 
-    document.title = "React To-Do App"; // Cambia el título de la pestaña
-  }, []);
+  //Componentes que se van a renderizar dependiendo de los estados
 
-  //Componentes que se van a renderizar
   const headerComponent = <Header isLoggedIn={isLoggedIn} user={user} />; //Por defecto false y null
   const mainContent = isLoggedIn ? <Dashboard isLoggedIn={isLoggedIn} user={user} /> : <Login handleLogin={handleLogin} />; // Por defecto false y null
   const footerComponent = <Footer isLoggedIn={isLoggedIn} handleLogout={handleLogout} />; //Por defecto false y null
@@ -66,5 +107,6 @@ const handleLogout = () => {
     </div>
   );
 };
+
 
 export default App;
