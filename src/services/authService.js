@@ -6,18 +6,21 @@ import axios from 'axios'; //Peticiones http desce este fichero
 export const loginService = async (email, password) => {
 
   try {
+
     // Hacemos la solicitud POST al backend para autenticar al usuario
     const response = await axios.post(API_URL_LOGIN, { email, password });
 
     // Obtenemos los datos del usuario y el token de la respuesta
-    const { token , refreshToken } = response.data;
+    const { accessToken , refreshToken } = response.data;
 
     // Guardamos el token en el localStorage
-    localStorage.setItem('acessToken', token);
+    localStorage.setItem('accessToken', accessToken);
     localStorage.setItem('refreshToken', refreshToken);
 
+    //console.log('Tokens guardados:', localStorage.getItem('accessToken'), localStorage.getItem('refreshToken'));
+
     // Devolvemos el accessToken
-    return token;
+    return accessToken;
 
   } catch (error) {
     
@@ -38,14 +41,40 @@ export const loginService = async (email, password) => {
 export const logoutService = async (userId) => {
 
   try {
-    await axios.post(API_URL_LOGOUT, { userId });
+      const accessToken = localStorage.getItem('accessToken'); // Obtiene el token del localStorage
+
+      //console.log('Token enviado en logout:', accessToken);
+
+      if (!accessToken) {
+        throw new Error('No token available');
+      }
+
+        const logoutResponse = await axios.post( API_URL_LOGOUT,
+                          { userId }, // Enviar el ID del usuario en el cuerpo
+                          {
+                            headers: {
+                              'Content-Type': 'application/json',
+                               'Authorization': `Bearer ${accessToken}`, // Enviar el token en los headers
+                            },
+                          }
+              );
+
+        const logoutMessage = logoutResponse.data.message;
+
+        //console.log('Respuesta del backend:', logoutMessage);
+
+        return logoutMessage;
+
+
   } catch (error) {
+
     console.error('Error al cerrar sesión:', error.response?.data || error.message);
+    throw error; // Lanza el error para manejarlo en el frontend
+
   } finally {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
   }
-
 
 }
 
@@ -61,7 +90,6 @@ export const refreshTokenService = async (refreshToken) => {
   try {
 
     const response = await axios.post(API_URL_REFRESH, { refreshToken });
-
     const { newAccessToken } = response.data;
 
     if (newAccessToken) {
@@ -71,7 +99,7 @@ export const refreshTokenService = async (refreshToken) => {
       return newAccessToken;
 
     } else {
-      
+
       console.error('No new access token received from backend');
       return null;
     }
@@ -82,4 +110,5 @@ export const refreshTokenService = async (refreshToken) => {
     return null;
 
   }
+
 };

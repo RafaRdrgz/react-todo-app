@@ -1,4 +1,4 @@
-import jwt_decode from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 import { useState } from 'react';
 import { useEffect } from "react";
 import Header from './components/Header';
@@ -22,9 +22,13 @@ const App = () => {
     const accessToken = localStorage.getItem('accessToken');
     const refreshToken = localStorage.getItem('refreshToken');
 
+    //console.log("Access Token:", localStorage.getItem('accessToken'));
+    //console.log("Refresh Token:", localStorage.getItem('refreshToken'));
+
+
     if (accessToken) {
 
-      const decodedToken = jwt_decode(accessToken);
+      const decodedToken = jwtDecode(accessToken);
 
       if(!isExpired(decodedToken.exp)){ // si el token existe y no ha expirado, establezco los datos del usuario
 
@@ -38,10 +42,10 @@ const App = () => {
 
       }
 
-    } else if (refreshToken){ //Si no hay accessToken pero el
+    } else if (refreshToken){ //Si no hay accessToken pero el refresh existe
 
       const newAccessToken = refreshTokenService(refreshToken);
-      const decodedToken = jwt_decode(newAccessToken);
+      const decodedToken = jwtDecode(newAccessToken);
 
       setUser({
         id: decodedToken.id,
@@ -74,8 +78,8 @@ const isExpired = (exp) => {
   // Función que maneja el login
   const handleLogin = async (email, password) => {
     try {
-      const { token } = await loginService(email, password); // Usamos la función del servicio
-      const decodedToken = jwt_decode(token)
+      const accessToken = await loginService(email, password); // Usamos la función del servicio
+      const decodedToken = jwtDecode(accessToken);
       setUser({
         id: decodedToken.id,
         email: decodedToken.email,
@@ -93,9 +97,13 @@ const isExpired = (exp) => {
 const handleLogout = async () => {
   try {
   
-    await logoutService(user.id); // Envía la solicitud de logout al backend
+    const logoutMessage = await logoutService(user.id); // Envía la solicitud de logout al backend
+
+    console.log(logoutMessage);
+    
     setUser(null); // Limpia el usuario
     setIsLoggedIn(false); // Cambia el estado de sesión
+
   } catch (error) {
     console.error('Error al cerrar sesión:', error);
   }
