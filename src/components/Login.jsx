@@ -3,11 +3,12 @@ import { useEffect } from "react";
 import PropTypes from 'prop-types'; //desestructurar objetos prop
 
 
-const Login = ( { handleLogin } ) => {
+const Login = ( { handleLogin, errorMessage } ) => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  
   const handleSubmit = (event) => {
     event.preventDefault();
     handleLogin(email, password); // Llamamos a handleLogin con los datos del formulario
@@ -44,7 +45,9 @@ const Login = ( { handleLogin } ) => {
         }
       }, []);
 
-
+  
+  //Se mostrará si hay mensaje de error
+  const showErrorMessage = errorMessage ? `<div className="bg-red-500 text-white mt-4 p-2 rounded mb-4">${errorMessage}</div>` : "";
 
   return (
 
@@ -93,6 +96,12 @@ const Login = ( { handleLogin } ) => {
 
                   </div>
 
+                  {/* Mostrar el mensaje de error solo si existe */}
+                  {
+                    showErrorMessage
+                  }
+
+
               </div>
 
               <div className='login-inpu flex justify-center items-center mb-4 md:mb-6'>
@@ -126,7 +135,7 @@ const Login = ( { handleLogin } ) => {
 Login.propTypes = {
 
   handleLogin: PropTypes.func.isRequired,
-  
+  errorMessage: PropTypes.string
 };
 
 export default Login;

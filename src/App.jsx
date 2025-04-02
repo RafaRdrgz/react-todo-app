@@ -13,6 +13,7 @@ const App = () => {
 //Estados necesarios para el login
   const [isLoggedIn, setIsLoggedIn] = useState(false); //booleanos para setear si el usuario está logueado y para preguntar si hay algun usuario logueado
   const [user, setUser] = useState(null); //Estados para manejar los datos del usuario y para establecer un usuario como logueado
+  const [errorMessage, setErrorMessage] = useState(''); // Estado para el mensaje de error
 
 
   //Se ejecuta cuando carga la aplicación y trata de ver si hay alguna sesión iniciada previamente
@@ -75,6 +76,13 @@ const isExpired = (exp) => {
  }
 
 
+ const showLoginError = (errorMessage) => {
+
+    setErrorMessage(errorMessage); // Establecemos el mensaje de error
+    setTimeout(() => setErrorMessage(''), 3000); // El mensaje desaparecerá después de 3 segundos
+ }
+
+
   // Función que maneja el login
   const handleLogin = async (email, password) => {
     try {
@@ -86,8 +94,10 @@ const isExpired = (exp) => {
         name: decodedToken.name,
       }); // Guardamos los datos del usuario
       setIsLoggedIn(true); // Marcamos al usuario como logueado
+      setErrorMessage(""); // Limpio el mensaje de error
     } catch (error) {
-      alert(error.message);
+
+      showLoginError(error.message);
     }
   };
 
@@ -113,7 +123,7 @@ const handleLogout = async () => {
   //Componentes que se van a renderizar dependiendo de los estados
 
   const headerComponent = <Header isLoggedIn={isLoggedIn} user={user} />; //Por defecto false y null
-  const mainContent = isLoggedIn ? <Dashboard isLoggedIn={isLoggedIn} user={user} /> : <Login handleLogin={handleLogin} />; // Por defecto false y null
+  const mainContent = isLoggedIn ? <Dashboard isLoggedIn={isLoggedIn} user={user} /> : <Login handleLogin={handleLogin} errorMessage = {errorMessage}  />; // Por defecto false y null
   const footerComponent = <Footer isLoggedIn={isLoggedIn} handleLogout={handleLogout} />; //Por defecto false y null
 
 
