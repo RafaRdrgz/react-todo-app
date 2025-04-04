@@ -25,7 +25,7 @@ const useTodoItem = (task, onDelete, onEdit) => {
  
         const newStatus = !completed;
         setCompleted(newStatus);
-        onEdit(task.id, newTitle, newDescription, completed);
+        onEdit(task.id, newTitle, newDescription, newStatus);
 
       };
     
