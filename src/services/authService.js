@@ -1,4 +1,5 @@
 import { API_URL_LOGIN, API_URL_LOGOUT, API_URL_REFRESH } from './urlConfig';
+import { decodeToken } from '../../utils/utils';
 import axios from 'axios'; //Peticiones http desce este fichero
 
 
@@ -38,10 +39,9 @@ export const loginService = async (email, password) => {
 
 
 //Función para cerrar sesión
-export const logoutService = async (userId) => {
+export const logoutService = async (accessToken) => {
 
   try {
-      const accessToken = localStorage.getItem('accessToken'); // Obtiene el token del localStorage
 
       //console.log('Token enviado en logout:', accessToken);
 
@@ -49,7 +49,10 @@ export const logoutService = async (userId) => {
         throw new Error('No token available');
       }
 
-        const logoutResponse = await axios.post( API_URL_LOGOUT,
+      const decodedToken = decodeToken(accessToken); // Obtiene el token del localStorage
+      const userId = decodedToken.id; //extraigo el id del usuario a hacer logout
+
+      const logoutResponse = await axios.post( API_URL_LOGOUT,
                           { userId }, // Enviar el ID del usuario en el cuerpo
                           {
                             headers: {
@@ -57,7 +60,7 @@ export const logoutService = async (userId) => {
                                'Authorization': `Bearer ${accessToken}`, // Enviar el token en los headers
                             },
                           }
-              );
+        );
 
         const logoutMessage = logoutResponse.data.message;
 

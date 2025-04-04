@@ -1,130 +1,36 @@
-import { jwtDecode } from 'jwt-decode';
-import { useState } from 'react';
-import { useEffect } from "react";
+import { useAuth } from './hooks/authHooks';
 import Header from './components/Header';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import Footer from './components/Footer';
-import { loginService, logoutService, refreshTokenService } from './services/authService';
+import { decodeToken } from '../utils/utils';
 
 
+//Raíz de la App
 const App = () => {
 
-//Estados necesarios para el login
-  const [isLoggedIn, setIsLoggedIn] = useState(false); //booleanos para setear si el usuario está logueado y para preguntar si hay algun usuario logueado
-  const [user, setUser] = useState(null); //Estados para manejar los datos del usuario y para establecer un usuario como logueado
-  const [errorMessage, setErrorMessage] = useState(''); // Estado para el mensaje de error
+
+  //Importo el hook de autenticación con todo lo necesario para manejar el login y retornando las funciones y estados necesarios
+  const { isLoggedIn, accessToken, errorMessage, handleLogin, handleLogout } = useAuth();
 
 
-  //Se ejecuta cuando carga la aplicación y trata de ver si hay alguna sesión iniciada previamente
-  useEffect(() => {
+  //Datos a pasar como props
+  let userName = "";
+  let userId = "";
 
-    // Verificamos si el token está en el localStorage al cargar la aplicación
-    const accessToken = localStorage.getItem('accessToken');
-    const refreshToken = localStorage.getItem('refreshToken');
+  if( isLoggedIn && accessToken ){
 
-    //console.log("Access Token:", localStorage.getItem('accessToken'));
-    //console.log("Refresh Token:", localStorage.getItem('refreshToken'));
+    const decodedToken = decodeToken(accessToken);
+    userId = decodedToken.id;
+    userName = decodedToken.name;
 
-
-    if (accessToken) {
-
-      const decodedToken = jwtDecode(accessToken);
-
-      if(!isExpired(decodedToken.exp)){ // si el token existe y no ha expirado, establezco los datos del usuario
-
-        setUser({
-          id: decodedToken.id,
-          email: decodedToken.email,
-          name: decodedToken.name,
-        });
-
-        setIsLoggedIn(true); //iniciamos sesión
-
-      }
-
-    } else if (refreshToken){ //Si no hay accessToken pero el refresh existe
-
-      const newAccessToken = refreshTokenService(refreshToken);
-      const decodedToken = jwtDecode(newAccessToken);
-
-      setUser({
-        id: decodedToken.id,
-        email: decodedToken.email,
-        name: decodedToken.name,
-      });
-
-      setIsLoggedIn(true); //iniciamos sesión
-
-    } // si no se cumple nada, los estados quedan en null y false.
-
-    document.title = "React To-Do App"; // Cambia el título de la pestaña
-  }, []);
-
-
-
-//Función para ver si el JWT ha expirado
-
-const isExpired = (exp) => {
-
-    const currentTime = Date.now() / 1000; //convierto a segundos
-
-    if(exp < currentTime) { return true } // el token ha expirado
-
-    return false;
-
- }
-
-
- const showLoginError = (errorMessage) => {
-
-    setErrorMessage(errorMessage); // Establecemos el mensaje de error
-    setTimeout(() => setErrorMessage(''), 3000); // El mensaje desaparecerá después de 3 segundos
- }
-
-
-  // Función que maneja el login
-  const handleLogin = async (email, password) => {
-    try {
-      const accessToken = await loginService(email, password); // Usamos la función del servicio
-      const decodedToken = jwtDecode(accessToken);
-      setUser({
-        id: decodedToken.id,
-        email: decodedToken.email,
-        name: decodedToken.name,
-      }); // Guardamos los datos del usuario
-      setIsLoggedIn(true); // Marcamos al usuario como logueado
-      setErrorMessage(""); // Limpio el mensaje de error
-    } catch (error) {
-
-      showLoginError(error.message);
-    }
-  };
-
-
-
-// Función que maneja el logout
-const handleLogout = async () => {
-  try {
-  
-    const logoutMessage = await logoutService(user.id); // Envía la solicitud de logout al backend
-
-    console.log(logoutMessage);
-    
-    setUser(null); // Limpia el usuario
-    setIsLoggedIn(false); // Cambia el estado de sesión
-
-  } catch (error) {
-    console.error('Error al cerrar sesión:', error);
   }
-};
-
 
   //Componentes que se van a renderizar dependiendo de los estados
 
-  const headerComponent = <Header isLoggedIn={isLoggedIn} user={user} />; //Por defecto false y null
-  const mainContent = isLoggedIn ? <Dashboard isLoggedIn={isLoggedIn} user={user} /> : <Login handleLogin={handleLogin} errorMessage = {errorMessage}  />; // Por defecto false y null
-  const footerComponent = <Footer isLoggedIn={isLoggedIn} handleLogout={handleLogout} />; //Por defecto false y null
+  const headerComponent = isLoggedIn ? <Header name={userName} /> : <Header/>; //Por defecto false y null
+  const mainContent = isLoggedIn ? <Dashboard id={userId} name={userName} /> : <Login handleLogin={handleLogin} errorMessage = {errorMessage}/>; // Por defecto false y null
+  const footerComponent = isLoggedIn ? <Footer handleLogout={handleLogout} /> : <Footer/>; //Por defecto false y null
 
 
   return (
