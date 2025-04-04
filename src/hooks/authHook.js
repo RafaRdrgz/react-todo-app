@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { loginService, logoutService, refreshTokenService } from '../services/authService';
-import { decodeToken } from '../../utils/utils';
+import { decodeToken } from '../../utils/tokenFuncs';
 
 
 

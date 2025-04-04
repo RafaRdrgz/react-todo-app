@@ -3,7 +3,7 @@ import Header from './components/Header';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import Footer from './components/Footer';
-import { decodeToken } from '../utils/utils';
+import { decodeToken } from '../utils/tokenFuncs';
 
 
 //Raíz de la App
@@ -27,7 +27,7 @@ const App = () => {
   //Componentes que se van a renderizar dependiendo de los estados
 
   const headerComponent = isLoggedIn ? <Header name={userName} /> : <Header/>; //Por defecto false y null
-  const mainContent = isLoggedIn ? <Dashboard id={userId} name={userName} /> : <Login handleLogin={handleLogin} errorMessage = {errorMessage}/>; // Por defecto false y null
+  const mainContent = isLoggedIn ? <Dashboard userId={userId} userName={userName} /> : <Login handleLogin={handleLogin} errorMessage = {errorMessage}/>; // Por defecto false y null
   const footerComponent = isLoggedIn ? <Footer handleLogout={handleLogout} /> : <Footer/>; //Por defecto false y null
 
 

@@ -1,11 +1,23 @@
-
 import PropTypes from 'prop-types';
+import { useTaskList } from '../hooks/dashboardHook';
 import CreateTaskBtn from './CreateTaskBtn';
 import TodoList from './TodoList';
 
 
 
-const Dashboard = ({ userId, userName }) => {
+const Dashboard = ({ userName }) => {
+
+  const {
+    filteredTasks,
+    addTask,
+    deleteTaskById,
+    updateTaskById,
+    handleSearchChange,
+    handleFilterChange,
+    searchTerm,
+    filter,
+    loading
+  } = useTaskList();
 
 
     return (
@@ -15,8 +27,17 @@ const Dashboard = ({ userId, userName }) => {
 
         <div className='dashItems flex flex-col justify-center align-center'>
 
-            <CreateTaskBtn></CreateTaskBtn>
-            <TodoList user={userId}/>
+            <CreateTaskBtn addTask={addTask}></CreateTaskBtn>
+            <TodoList
+                filteredTasks={filteredTasks}
+                deleteTaskById={deleteTaskById}
+                updateTaskById={updateTaskById}
+                handleSearchChange={handleSearchChange}
+                handleFilterChange={handleFilterChange}
+                searchTerm={searchTerm}
+                filter={filter}
+                loading={loading}
+              />
         </div>
       </main>
 
@@ -31,4 +52,4 @@ Dashboard.propTypes = {
 
 };
   
-  export default Dashboard;
+export default Dashboard;

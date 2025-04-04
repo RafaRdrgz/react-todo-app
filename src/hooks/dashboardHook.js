@@ -4,7 +4,7 @@ import { getTaskList, createTask, deleteTask, updateTask } from '../services/tas
 
 
 //hook para manejar estado de tareas
-const useTaskList = () => {
+export const useTaskList = () => {
 
 
     const [tasks, setTasks] = useState([]);
@@ -13,7 +13,7 @@ const useTaskList = () => {
     const [filter, setFilter] = useState("all");  // Estado para el filtro (completado o pendiente)
 
 
-    // Obtener tareas cuando el userId cambia
+
     useEffect(() => {
 
 
@@ -39,6 +39,8 @@ const useTaskList = () => {
       taskList();
 
     },[]); //Solo se ejecuta al montar el componente
+
+
   
 
     // Función para agregar una nueva tarea
@@ -50,7 +52,8 @@ const useTaskList = () => {
 
         const newTask = await createTask(title,description,completed);
         setTasks((prevTasks) => [ ... prevTasks, newTask ]); // Añadir la nueva tarea al estado
-
+        setSearchTerm("");
+        setFilter("all");
       } catch (error) {
 
         console.error('Error adding task:', error);
@@ -120,4 +123,3 @@ const useTaskList = () => {
 
   };
   
-  export default useTaskList;

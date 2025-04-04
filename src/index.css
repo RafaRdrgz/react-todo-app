@@ -132,3 +132,16 @@
   background-color: var(--mint-green);
   cursor: pointer;
 }
+
+
+.createTaskBtn {
+
+  background-color: var(--mint-green);
+
+}
+
+.createTaskBtn:hover{
+
+  background-color: var(--mint-green-2);
+  cursor: pointer;
+}

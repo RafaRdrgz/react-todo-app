@@ -1,13 +1,10 @@
-import { useTaskList } from '../hooks/todoListHook';
 import PropTypes from 'prop-types';
 import TodoItem from './TodoItem';
 
 
 
-const TodoList = () => {
-
-
-  const { loading, deleteTaskById, updateTaskById, searchTerm, filter, filteredTasks, handleSearchChange, handleFilterChange } = useTaskList();
+const TodoList = ({ filteredTasks, deleteTaskById, updateTaskById, handleSearchChange, 
+                    handleFilterChange, searchTerm, filter, loading }) => {
 
 
 
@@ -66,8 +63,13 @@ const TodoList = () => {
 };
 
 TodoList.propTypes = {
-
-    userId: PropTypes.string.isRequired
+  filteredTasks: PropTypes.array.isRequired,
+  deleteTaskById: PropTypes.func.isRequired,
+  updateTaskById: PropTypes.func.isRequired,
+  handleSearchChange: PropTypes.func.isRequired,
+  handleFilterChange: PropTypes.func.isRequired,
+  searchTerm: PropTypes.string.isRequired,
+  filter: PropTypes.string.isRequired,
+  loading: PropTypes.bool.isRequired,
 };
-  
   export default TodoList;

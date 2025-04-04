@@ -1,4 +1,4 @@
-import jwtDecode from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 
 
 //Decodificar un token
@@ -16,6 +16,12 @@ export const setAccessToken = (token) => {
 
     localStorage.setItem('accessToken', token);
 
+}
+
+export const getAccessToken = () => {
+
+   const accessToken = localStorage.getItem('accessToken');
+   return accessToken;
 }
 
 //Establecer refreshToken
