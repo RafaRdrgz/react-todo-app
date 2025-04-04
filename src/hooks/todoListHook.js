@@ -9,6 +9,9 @@ const useTaskList = () => {
 
     const [tasks, setTasks] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [searchTerm, setSearchTerm] = useState("");  // Estado para la búsqueda
+    const [filter, setFilter] = useState("all");  // Estado para el filtro (completado o pendiente)
+
 
     // Obtener tareas cuando el userId cambia
     useEffect(() => {
@@ -86,7 +89,35 @@ const useTaskList = () => {
         }
     };
 
-    return { tasks, loading, addTask, deleteTaskById, updateTaskById };
+
+    // Filtrar tareas según el searchTerm y el filtro de estado
+    const filteredTasks = tasks.filter((task) => {
+      
+        // Filtro por búsqueda en el título
+        const matchesSearch = task.title.toLowerCase().includes(searchTerm.toLowerCase());
+            
+        // Filtro por estado: "all", "completed" o "pending"
+        const matchesFilter = filter === "all" || (filter === "completed" && task.completed) || (filter === "pending" && !task.completed);
+            
+        return matchesSearch && matchesFilter;
+  
+    });
+
+
+
+    //Cambiar el término de búsqueda
+    const handleSearchChange = (e) => {
+       setSearchTerm(e.target.value);
+    };
+    
+    //Cambiar el filtro de búsqueda
+    const handleFilterChange = (e) => {
+          setFilter(e.target.value);
+    };
+
+
+    return { tasks, loading, addTask, deleteTaskById, updateTaskById, filteredTasks, handleSearchChange, handleFilterChange };
+
   };
   
   export default useTaskList;

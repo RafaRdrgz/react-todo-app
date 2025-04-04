@@ -1,32 +1,17 @@
-import { useState } from "react";
+
 import { Trash, PencilSimple, FloppyDisk, X } from "@phosphor-icons/react";
 import PropTypes from "prop-types";
+import useTodoItem from "../hooks/todoItemHook";
 
 const TodoItem = ({ task, onDelete, onEdit }) => {
 
-  const [completed, setCompleted] = useState(task.completed);
-  const [editing, setEditing] = useState(false);
-  const [newTitle, setNewTitle] = useState(task.title);
-  const [newDescription, setNewDescription] = useState(task.description);
+ const { completed, editing, newTitle, newDescription, 
+         handleChangeTitle, handleChangeDescription,
+         toggleComplete, handleEditClick, handleCancelEditClick, 
+         handleSaveClick, handleDeleteClick
+        
+        } = useTodoItem(task, onDelete, onEdit);
 
-  const toggleComplete = () => {
-    setCompleted(!completed);
-  };
-
-  const handleEditClick = () => {
-    setEditing(true); // Activa el modo de edición
-  };
-
-  const handleSaveClick = () => {
-    onEdit(task.id, newTitle, newDescription); // Llama a la función de edición en el padre
-    setEditing(false); // Desactiva el modo de edición
-  };
-
-  const handleCancelEditClick = () => {
-    setEditing(false); // Cancela la edición y vuelve a los datos originales
-    setNewTitle(task.title);
-    setNewDescription(task.description);
-  };
 
   return (
     <div className={`todo-item flex flex-col justify-center p-4 my-2 md:my-4 rounded-lg shadow-md ${completed ? 'completed' : 'pending'}`}>
@@ -43,7 +28,7 @@ const TodoItem = ({ task, onDelete, onEdit }) => {
             <input
               type="text"
               value={newTitle}
-              onChange={(e) => setNewTitle(e.target.value)}
+              onChange={(e) => handleChangeTitle(e.target.value)}
               className="border-b-2 border-gray-300 rounded-lg w-full text-center bg-white"
             />
           </div>
@@ -56,7 +41,7 @@ const TodoItem = ({ task, onDelete, onEdit }) => {
       {editing ? (
         <textarea
           value={newDescription}
-          onChange={(e) => setNewDescription(e.target.value)}
+          onChange={(e) => handleChangeDescription(e.target.value)}
           className="mb-3 p-2 w-full border-2 border-gray-300"
         />
       ) : (<>
@@ -99,7 +84,7 @@ const TodoItem = ({ task, onDelete, onEdit }) => {
                     </button>
                     <button
                       className="delete px-3 py-1 rounded-sm text-xl hover:rounded-3xl"
-                      onClick={() => onDelete(task.id)}
+                      onClick={handleDeleteClick}
                     >
                       <Trash size={24} />
                     </button>
