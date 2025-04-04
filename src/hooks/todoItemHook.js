@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 //hook para manejar estado de cada item
 const useTodoItem = (task, onDelete, onEdit) => {
 
+    
     const [completed, setCompleted] = useState(task.completed);
     const [editing, setEditing] = useState(false);
     const [newTitle, setNewTitle] = useState(task.title);

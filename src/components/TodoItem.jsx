@@ -1,4 +1,3 @@
-
 import { Trash, PencilSimple, FloppyDisk, X } from "@phosphor-icons/react";
 import PropTypes from "prop-types";
 import useTodoItem from "../hooks/todoItemHook";
@@ -46,14 +45,13 @@ const TodoItem = ({ task, onDelete, onEdit }) => {
         />
       ) : (<>
           <p className="ubuntu-light mb-1">{task.description}</p>
-          <p className="date ubuntu-light text-sm">Creado: {task.createdAt}</p>
+          <p className="date ubuntu-light text-sm">Creado: {new Date(task.createdAt).toLocaleDateString()}</p>
           </>
       )}
       </div>
       <div className="buttons flex justify-between items-center">
             <button disabled
                     className={`px-3 py-1 rounded-sm ${completed ? "btn-completed" : "btn-pending"}`}
-                    onClick={toggleComplete}
             >
                 {completed ? "Completada" : "Pendiente"}
             </button>
