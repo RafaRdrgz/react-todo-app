@@ -12,13 +12,13 @@ const isExpired = (exp) => {
 
 
 
-// Hook para gestionar el login, logout y la verificación del token JWT
+// Hook para gestionar estados de ususrio, login, logout y la verificación del token JWT
 export const useAuth = () => {
     
+
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [accessToken, setAccessToken] = useState(null);
     const [errorMessage, setErrorMessage] = useState('');
-  
 
 
     useEffect(() => {
@@ -47,7 +47,7 @@ export const useAuth = () => {
 
       document.title = 'React To-Do App';
 
-    }, [])
+    }, []);
 
 
 
@@ -91,4 +91,5 @@ export const useAuth = () => {
 
 
   return { isLoggedIn, accessToken, errorMessage, handleLogin, handleLogout };
+
 }

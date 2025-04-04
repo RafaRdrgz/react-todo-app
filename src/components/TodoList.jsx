@@ -1,57 +1,100 @@
 import { useState, useEffect } from 'react';
-import { } from '../services/tasksService';
+import { getTaskList, deleteTask, updateTask  } from '../services/taskListService';
 import PropTypes from 'prop-types';
 import TodoItem from './TodoItem';
   
 
 
-const TodoList = ({ user }) => {
+const TodoList = () => {
+
+
     const [tasks, setTasks] = useState([]); // Estado para almacenar las tareas
     const [loading, setLoading] = useState(true);
-
     const [searchTerm, setSearchTerm] = useState("");  // Estado para la búsqueda
     const [filter, setFilter] = useState("all");  // Estado para el filtro (completado o pendiente)
 
 
 
-    // Simula la carga de datos como si vinieran del backend
-    useEffect(() => {
-        
-        setTimeout(() => {
-          const userTasks = fakeTasks.filter(task => task.userId === user.id);
-          setTasks(userTasks);
-          setLoading(false);
-        }, 2000); // Simula un delay de 2 segundos
-      }, [user.id]);
+  // Obtener tareas del backend al montar el componente
+  useEffect(() => {
 
-      //Editar una tarea
-      const handleEdit = (id, newTitle, newDescription) => {
-        setTasks((prevTasks) =>
-          prevTasks.map((task) =>
-            task.id === id
-              ? { ...task, title: newTitle, description: newDescription }
-              : task
-          )
-        );
-      };
+    const getTasks = async () => {
+      try {
+        setLoading(true);
+        const taskList = await getTaskList(); // Llamar al servicio para obtener las tareas
+        setTasks(taskList); // Actualizar el estado con las tareas obtenidas
 
-    //Eliminar una tarea
-    const handleDelete = (taskId) => {
-        //Filtra todas las tareas y se queda con aquellas que no tienen el id proporcionado, eliminándola del frontend
-        setTasks((prevTasks) => prevTasks.filter(task => task.id !== taskId));
+      } catch (error) {
+
+        console.error('Error fetching tasks:', error);
+
+      } finally {
+        setLoading(false); // Cambiar el estado de carga a false cuando se complete la solicitud
+      }
     };
+
+    getTasks();
+
+  }); // Solo se ejecuta cuando el userId cambia
+
+
+
+
+
+  const handleDelete = async (taskId) => {
+
+    try {
+
+      await deleteTask(taskId); // Llamada al backend
+      setTasks((prevTasks) => prevTasks.filter(task => task.id !== taskId)); // Actualizar estado local
+
+    } catch (error) {
+
+      console.error('Error al eliminar tarea:', error);
+
+    }
+  };
+
+
+  //Editar una tarea
+  const handleEdit = async (taskId, newTitle, newDescription, completed) => {
+
+    try {
+
+      //Se actualiza en la base de datos
+      const updatedTask = await updateTask(taskId, {
+        title: newTitle,
+        description: newDescription,
+        completed: completed
+      });
+  
+      // Actualiza el estado local de tareas con la tarea modificada
+      setTasks((prevTasks) =>
+
+        prevTasks.map((task) =>
+          task.id === taskId ? updatedTask : task
+        )
+
+      );
+
+    } catch (error) {
+
+      console.error('Error al editar tarea:', error);
+    }
+  };
 
 
     // Filtrar tareas según el searchTerm y el filtro de estado
     const filteredTasks = tasks.filter((task) => {
       
-      // Filtro por búsqueda en el título
-      const matchesSearch = task.title.toLowerCase().includes(searchTerm.toLowerCase());
-      
-      // Filtro por estado: "all", "completed" o "pending"
-      const matchesFilter = filter === "all" || (filter === "completed" && task.completed) || (filter === "pending" && !task.completed);
-      
-      return matchesSearch && matchesFilter;
+        // Filtro por búsqueda en el título
+        const matchesSearch = task.title.toLowerCase().includes(searchTerm.toLowerCase());
+          
+        // Filtro por estado: "all", "completed" o "pending"
+        const matchesFilter = filter === "all" || (filter === "completed" && task.completed) || (filter === "pending" && !task.completed);
+          
+        return matchesSearch && matchesFilter;
+
     });
 
 
@@ -121,16 +164,7 @@ const TodoList = ({ user }) => {
 
 TodoList.propTypes = {
 
-    user: PropTypes.shape({
-
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      email: PropTypes.string.isRequired,
-      picture: PropTypes.string,
-      createdAt: PropTypes.string.isRequired,
-      updatedAt: PropTypes.string,
-      
-    }).isRequired,
+    userId: PropTypes.string.isRequired
 };
   
   export default TodoList;

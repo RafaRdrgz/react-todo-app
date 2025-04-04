@@ -1,5 +1,5 @@
 import { API_URL_LOGIN, API_URL_LOGOUT, API_URL_REFRESH } from './urlConfig';
-import { decodeToken } from '../../utils/utils';
+import { decodeToken , removeTokens, setAccessToken, setRefreshToken } from '../../utils/tokenFuncs';
 import axios from 'axios'; //Peticiones http desce este fichero
 
 
@@ -15,8 +15,8 @@ export const loginService = async (email, password) => {
     const { accessToken , refreshToken } = response.data;
 
     // Guardamos el token en el localStorage
-    localStorage.setItem('accessToken', accessToken);
-    localStorage.setItem('refreshToken', refreshToken);
+    setAccessToken(accessToken);
+    setRefreshToken(refreshToken);
 
     //console.log('Tokens guardados:', localStorage.getItem('accessToken'), localStorage.getItem('refreshToken'));
 
@@ -75,8 +75,7 @@ export const logoutService = async (accessToken) => {
     throw error; // Lanza el error para manejarlo en el frontend
 
   } finally {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
+      removeTokens();
   }
 
 }

@@ -1,4 +1,4 @@
-import { useAuth } from './hooks/authHooks';
+import { useAuth } from './hooks/authHook';
 import Header from './components/Header';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
@@ -9,10 +9,8 @@ import { decodeToken } from '../utils/utils';
 //Raíz de la App
 const App = () => {
 
-
   //Importo el hook de autenticación con todo lo necesario para manejar el login y retornando las funciones y estados necesarios
   const { isLoggedIn, accessToken, errorMessage, handleLogin, handleLogout } = useAuth();
-
 
   //Datos a pasar como props
   let userName = "";
