@@ -19,6 +19,7 @@ const Login = ( { handleLogin, handleLocalRegister } ) => {
 
   //Estados de registro
   const {isRegisterModalOpen, openRegisterModal, closeRegisterModal,
+         registerName, handleChangeRegisterName,
          registerEmail, handleChangeRegisterEmail,
          registerPassword, handleChangeRegisterPassword } = useRegisterModal();
 
@@ -157,6 +158,8 @@ const Login = ( { handleLogin, handleLocalRegister } ) => {
               <RegisterModal
                   handleLocalRegister={handleLocalRegister}
                   closeRegisterModal={closeRegisterModal}
+                  registerName={registerName}
+                  handleChangeRegisterName={handleChangeRegisterName}        
                   registerEmail={registerEmail}
                   handleChangeRegisterEmail={handleChangeRegisterEmail}
                   registerPassword={registerPassword}
@@ -171,7 +174,7 @@ const Login = ( { handleLogin, handleLocalRegister } ) => {
 Login.propTypes = {
 
   handleLogin: PropTypes.func.isRequired,
-  handleRegister: PropTypes.func.isRequired,
+  handleLocalRegister: PropTypes.func.isRequired,
   errorMessage: PropTypes.string
 };
 

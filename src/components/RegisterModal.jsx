@@ -1,19 +1,17 @@
 import PropTypes from 'prop-types';
 import ErrorMessage from './ErrorMessage';
+import { useRegisterModal } from '../hooks/registerModalHook';
 import { useErrorMessage } from '../hooks/showErrorHook';
 import { X } from '@phosphor-icons/react';
 
 
-export const RegisterModal = ({ handleLocalRegister, closeRegisterModal,
-                                registerName, handleChangeRegisterName, 
-                                registerEmail, handleChangeRegisterEmail,
-                                registerPassword, handleChangeRegisterPassword }
-
-                              ) => {
+export const RegisterModal = ({ handleLocalRegister }) => {
 
 
   //Estados de error
   const { showError, setError, errorMessage } = useErrorMessage();
+  const { registerName, registerEmail, registerPassword,
+          handleChangeRegisterName, handleChangeRegisterEmail, handleChangeRegisterPassword} = useRegisterModal();
 
 
   const handleLocalRegisterSubmit = async () => {

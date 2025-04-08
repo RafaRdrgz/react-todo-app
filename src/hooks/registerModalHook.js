@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { registerService } from '../services/registerService';
 
 
 export const useRegisterModal = () =>{
 
     const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
+    const [registerName, setRegisterName]= useState("");
     const [registerEmail, setRegisterEmail] = useState("");
     const [registerPassword, setRegisterPassword] = useState("");
 
@@ -12,12 +12,15 @@ export const useRegisterModal = () =>{
     const closeRegisterModal = () => setIsRegisterModalOpen(false);
     const toggleRegisterModal = () => setIsRegisterModalOpen((prev) => !prev);
 
+
+    const handleChangeRegisterName  = (newValue) => { setRegisterName(newValue); }
     const handleChangeRegisterEmail = (newValue) => { setRegisterEmail(newValue); }
 
     const handleChangeRegisterPassword = (newValue) => { setRegisterPassword(newValue); }
 
 
     const resetRegisterForm = () => {
+        setRegisterName('');
         setRegisterEmail('');
         setRegisterPassword('');
       };
@@ -29,8 +32,10 @@ export const useRegisterModal = () =>{
         openRegisterModal,
         closeRegisterModal,
         toggleRegisterModal,
+        registerName,
         registerEmail,
         registerPassword,
+        handleChangeRegisterName,
         handleChangeRegisterEmail,
         handleChangeRegisterPassword,
         resetRegisterForm
