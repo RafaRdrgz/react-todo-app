@@ -38,6 +38,13 @@ export const loginService = async (email, password) => {
 };
 
 
+export const registerLocalService = async(name, user, password) => {
+  
+
+  
+}
+
+
 //Función para cerrar sesión
 export const logoutService = async (accessToken) => {
 
@@ -77,11 +84,6 @@ export const logoutService = async (accessToken) => {
   } finally {
       removeTokens();
   }
-
-}
-
-
-export const registerLocalService(name, email,password){
 
 }
 
