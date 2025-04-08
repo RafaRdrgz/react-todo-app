@@ -35,7 +35,7 @@ export const RegisterModal = ({ handleLocalRegister, closeModal }) => {
     
             <h2 className="text-lg font-bold mb-4 text-center">Crear nueva tarea</h2>
     
-            <form onSubmit={handleLocalRegisterSubmit} className="flex flex-col gap-4">
+            <form onSubmit={() => handleLocalRegisterSubmit()} className="flex flex-col gap-4">
 
 
             <input

@@ -1,9 +1,42 @@
 import PropTypes from 'prop-types';
 import { X } from '@phosphor-icons/react';
+import { useCreateTaskModal } from '../hooks/createTaskModalHook';
+import { useErrorHook } from '../hooks/showErrorHook';
+import ErrorMessage from './ErrorMessage';
 
-const CreateTaskModal = ({title, description, completed,
-                         handleChangeTitle, handleChangeDescription, toggleCompleted,
-                         handleSubmit, closeModal}) => {
+const CreateTaskModal = ({addTask, closeModal}) => {
+
+
+  //Estados para crear usuario
+  const {title, description, completed,
+         handleChangeTitle, handleChangeDescription, toggleCompleted, resetForm } = useCreateTaskModal();
+
+
+  //Estados de error
+  const { showError, setError, errorMessage } = useErrorHook();
+
+          
+  const handleAddTask = async () => {
+
+      try{
+
+        if (!title.trim()) { throw new Error("Title needed")}
+      
+        await addTask({ title, description, completed });
+        
+        closeModal(); // cerrar el modal al crear
+        resetForm(); //Limia campos después de cerrar
+
+
+      } catch(error) {
+
+        setError(error.message);
+      }
+      
+  };
+
+
+
 
   return (
 
@@ -18,7 +51,7 @@ const CreateTaskModal = ({title, description, completed,
 
         <h2 className="text-lg font-bold mb-4 text-center">Crear nueva tarea</h2>
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <form onSubmit={() => handleAddTask()} className="flex flex-col gap-4">
           <input
             type="text"
             placeholder="Título"
@@ -42,6 +75,8 @@ const CreateTaskModal = ({title, description, completed,
         />
         Marcar como completada
         </label>
+
+        {showError && <ErrorMessage message={errorMessage} />}
           <button 
             type="submit" 
             className="bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
@@ -56,14 +91,10 @@ const CreateTaskModal = ({title, description, completed,
 
   
 };
+
+
 CreateTaskModal.propTypes = {
-  title: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
-  completed: PropTypes.bool.isRequired,
-  handleChangeTitle: PropTypes.func.isRequired,
-  handleChangeDescription: PropTypes.func.isRequired,
-  toggleCompleted: PropTypes.func.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
+  addTask: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
 };
 export default CreateTaskModal;

@@ -1,15 +1,16 @@
 import PropTypes from "prop-types";
 import { PlusCircle } from "@phosphor-icons/react";
-import { useCreateTaskModal } from "../hooks/createTaskModalHook";
 import CreateTaskModal from "./CreateTaskModal";
+import { useModal } from '../hooks/modalHook';
 
 
 const CreateTaskBtn = ({addTask}) => {
 
-      const { isModalOpen, openModal, title, description, completed,
-        handleChangeTitle, handleChangeDescription, toggleCompleted,
-        handleSubmit, closeModal } = useCreateTaskModal(addTask);
-  
+
+      //Estados para el modal
+      const { isModalOpen, openModal, closeModal } = useModal();
+
+
     return (
       <>
         <button
@@ -22,13 +23,7 @@ const CreateTaskBtn = ({addTask}) => {
               {/* Mostrar el modal solo cuando isModalOpen es true */}
               {isModalOpen && (
                 <CreateTaskModal
-                  title={title}
-                  description={description}
-                  completed={completed}
-                  handleChangeTitle={handleChangeTitle}
-                  handleChangeDescription={handleChangeDescription}
-                  toggleCompleted={toggleCompleted}
-                  handleSubmit={handleSubmit}
+                  addTask={addTask}
                   closeModal={closeModal}
                 />)
               }
@@ -37,7 +32,7 @@ const CreateTaskBtn = ({addTask}) => {
 
 };
 CreateTaskBtn.propTypes = {
-    addTask: PropTypes.func.isRequired,
+    addTask: PropTypes.func.isRequired
 };
 
   export default CreateTaskBtn;

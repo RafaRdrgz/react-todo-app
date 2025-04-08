@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useEffect } from "react";
-import { useRegisterModal } from '../hooks/registerModalHook';
 import { useErrorMessage } from '../hooks/showErrorHook';
 import { useModal } from '../hooks/showErrorHook';
 import { RegisterModal } from './RegisterModal';
