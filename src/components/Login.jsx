@@ -1,12 +1,20 @@
 import { useState } from 'react';
 import { useEffect } from "react";
+import { RegisterModal } from './RegisterModal';
+import { ErrorMessage } from './ErrorMessage';
+import { useRegisterModal } from '../hooks/registerModalHook';
 import PropTypes from 'prop-types'; //desestructurar objetos prop
 
 
-const Login = ( { handleLogin, errorMessage } ) => {
+const Login = ( { handleLogin, handleRegister, errorMessage } ) => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+
+  const {isRegisterModalOpen, openRegisterModal, closeRegisterModal,
+         registerEmail, handleChangeRegisterEmail,
+         registerPassword, handleChangeRegisterPassword } = useRegisterModal();
 
   
   const handleSubmit = (event) => {
@@ -18,10 +26,7 @@ const Login = ( { handleLogin, errorMessage } ) => {
   /* Sign in with google */
 
   useEffect(() => {
-
-    // Esperar a que Google cargue antes de usarlo
     const initializeGoogleLogin = () => {
-
       if (window.google) {
         window.google.accounts.id.initialize({
           client_id: "TU_CLIENT_ID_AQUÍ", // Reemplázalo cuando tengas uno
@@ -35,19 +40,15 @@ const Login = ( { handleLogin, errorMessage } ) => {
       }
     };
 
-    // Verificar si Google ya está disponible
     if (window.google) {
-          initializeGoogleLogin();
-        } else {
-          // Esperar a que se cargue el script
-          window.addEventListener("load", initializeGoogleLogin);
-          return () => window.removeEventListener("load", initializeGoogleLogin);
-        }
-      }, []);
+      initializeGoogleLogin();
+    } else {
+      window.addEventListener("load", initializeGoogleLogin);
+      return () => window.removeEventListener("load", initializeGoogleLogin);
+    }
+  }, []);
 
-  
-  //Se mostrará si hay mensaje de error
-  const showErrorMessage = errorMessage ? `<div className="bg-red-500 text-white mt-4 p-2 rounded mb-4">${errorMessage}</div>` : "";
+
 
   return (
 
@@ -97,22 +98,23 @@ const Login = ( { handleLogin, errorMessage } ) => {
                   </div>
 
                   {/* Mostrar el mensaje de error solo si existe */}
-                  {
-                    showErrorMessage
-                  }
+                  <ErrorMessage message={errorMessage} />
 
 
               </div>
 
-              <div className='login-inpu flex justify-center items-center mb-4 md:mb-6'>
-                <button  className="login-btn p-4 border-2 rounded-xl  ubuntu-medium text-lg"type="submit">Login</button>
+              <div className='login-btns flex flex-col'>
+
+                  <div className='login-input flex justify-center items-center mb-4 md:mb-6'>
+                    <button  className="login-btn p-4 border-2 rounded-xl  ubuntu-medium text-lg"type="submit">Login</button>
+                  </div>
+
+
+                  <div id="google-login-button" className="g_id_signin mb-4 md:mb-6"></div>
+
+
+
               </div>
-
-              <h2 className='ubuntu-bold text-xl text-center mb-4 md:mb-6'>Or:</h2>
-
-              
-              <div id="google-login-button" className="g_id_signin"></div>
-
             { /**
               <script>
                 function handleCredentialResponse(response) {
@@ -127,6 +129,25 @@ const Login = ( { handleLogin, errorMessage } ) => {
             
           </form>
 
+            <h2 className='ubuntu-bold text-xl text-center mb-4 md:mb-6'>Or:</h2>
+
+
+            <div className='login-input flex justify-center items-center mb-4 md:mb-6' type="button">
+              <button className="register-btn p-4 border-2 rounded-xl  ubuntu-medium text-lg" onClick={openRegisterModal}>Register</button>
+            </div>
+
+            {/* Modal de registro, solo se muestra si isRegisterModalOpen es true */}
+            {isRegisterModalOpen && (
+              <RegisterModal
+                  handleRegister={handleRegister}
+                  errorMessage={errorMessage}
+                  closeRegisterModal={closeRegisterModal}
+                  registerEmail={registerEmail}
+                  handleChangeRegisterEmail={handleChangeRegisterEmail}
+                  registerPassword={registerPassword}
+                  handleChangeRegisterPassword={handleChangeRegisterPassword}
+                    />
+            )} 
       </div>
 
   );
@@ -135,6 +156,7 @@ const Login = ( { handleLogin, errorMessage } ) => {
 Login.propTypes = {
 
   handleLogin: PropTypes.func.isRequired,
+  handleRegister: PropTypes.func.isRequired,
   errorMessage: PropTypes.string
 };
 

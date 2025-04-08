@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { loginService, logoutService, refreshTokenService } from '../services/authService';
+import { loginService, registerService, logoutService, refreshTokenService } from '../services/authService';
 import { decodeToken } from '../../utils/tokenFuncs';
 
 
@@ -76,6 +76,22 @@ export const useAuth = () => {
   };
 
 
+  // Función para manejar el registro
+  const handleRegister = async (email, password) => {
+
+    try {
+
+      const newAccessToken = await loginService(email, password);
+
+      setAccessToken(newAccessToken);
+      setIsLoggedIn(true);
+      setErrorMessage('');
+
+    } catch (error) {
+      showLoginError(error.message);
+    }
+  };
+
   // Función para manejar el logout
   const handleLogout = async (token) => {
     try {
@@ -90,6 +106,6 @@ export const useAuth = () => {
   };
 
 
-  return { isLoggedIn, accessToken, errorMessage, handleLogin, handleLogout };
+  return { isLoggedIn, accessToken, errorMessage, handleLogin, handleRegister, handleLogout };
 
 }
