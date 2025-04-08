@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useEffect } from "react";
 import { useRegisterModal } from '../hooks/registerModalHook';
 import { useErrorMessage } from '../hooks/showErrorHook';
+import { useModal } from '../hooks/showErrorHook';
 import { RegisterModal } from './RegisterModal';
 import { ErrorMessage } from './ErrorMessage';
 
@@ -17,12 +18,8 @@ const Login = ( { handleLogin, handleLocalRegister } ) => {
   //Estados de error
   const { showError, setError, errorMessage } = useErrorMessage();
 
-  //Estados de registro
-  const {isRegisterModalOpen, openRegisterModal, closeRegisterModal,
-         registerName, handleChangeRegisterName,
-         registerEmail, handleChangeRegisterEmail,
-         registerPassword, handleChangeRegisterPassword } = useRegisterModal();
-
+  //Estados del modal
+  const { isModalOpen, openModal, closeModal } = useModal();
 
 
   
@@ -150,20 +147,14 @@ const Login = ( { handleLogin, handleLocalRegister } ) => {
 
 
             <div className='login-input flex justify-center items-center mb-4 md:mb-6' type="button">
-              <button className="register-btn p-4 border-2 rounded-xl  ubuntu-medium text-lg" onClick={openRegisterModal}>Register</button>
+              <button className="register-btn p-4 border-2 rounded-xl  ubuntu-medium text-lg" onClick={openModal}>Register</button>
             </div>
 
             {/* Modal de registro, solo se muestra si isRegisterModalOpen es true */}
-            {isRegisterModalOpen && (
+            {isModalOpen && (
               <RegisterModal
                   handleLocalRegister={handleLocalRegister}
-                  closeRegisterModal={closeRegisterModal}
-                  registerName={registerName}
-                  handleChangeRegisterName={handleChangeRegisterName}        
-                  registerEmail={registerEmail}
-                  handleChangeRegisterEmail={handleChangeRegisterEmail}
-                  registerPassword={registerPassword}
-                  handleChangeRegisterPassword={handleChangeRegisterPassword}
+                  closeRegisterModal={closeModal}
                     />
             )} 
       </div>

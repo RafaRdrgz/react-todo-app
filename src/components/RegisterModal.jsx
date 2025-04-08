@@ -5,7 +5,7 @@ import { useErrorMessage } from '../hooks/showErrorHook';
 import { X } from '@phosphor-icons/react';
 
 
-export const RegisterModal = ({ handleLocalRegister }) => {
+export const RegisterModal = ({ handleLocalRegister, closeModal }) => {
 
 
   //Estados de error
@@ -27,7 +27,7 @@ export const RegisterModal = ({ handleLocalRegister }) => {
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
           <div className="bg-white rounded-xl shadow-lg p-6 w-[90%] max-w-md relative">
             <button 
-              onClick={closeRegisterModal} 
+              onClick={closeModal} 
               className="absolute top-4 right-4 text-gray-600 hover:text-black"
             >
               <X size={24} />
@@ -86,11 +86,5 @@ export const RegisterModal = ({ handleLocalRegister }) => {
 
 RegisterModal.propTypes = {
   handleLocalRegister: PropTypes.func.isRequired,
-  closeRegisterModal: PropTypes.func.isRequired,
-  registerName: PropTypes.string.isRequired,
-  handleChangeRegisterName: PropTypes.func.isRequired,
-  registerEmail: PropTypes.string.isRequired,
-  handleChangeRegisterEmail: PropTypes.func.isRequired,
-  registerPassword: PropTypes.string.isRequired,
-  handleChangeRegisterPassword: PropTypes.func.isRequired
+  closeModal: PropTypes.func.isRequired,
 };
