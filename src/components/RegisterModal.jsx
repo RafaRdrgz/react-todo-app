@@ -1,15 +1,27 @@
 import PropTypes from 'prop-types';
+import ErrorMessage from './ErrorMessage';
+import { useErrorMessage } from '../hooks/showErrorHook';
 import { X } from '@phosphor-icons/react';
 
 
-export const RegisterModal = ({ handleRegister, registerEmail, registerPassword,
-                                handleChangeRegisterEmail, handleChangeRegisterPassword,
-                                closeRegisterModal }) => {
+export const RegisterModal = ({ handleLocalRegister, closeRegisterModal,
+                                registerName, handleChangeRegisterName, 
+                                registerEmail, handleChangeRegisterEmail,
+                                registerPassword, handleChangeRegisterPassword }
+
+                              ) => {
 
 
-  const handleRegisterSubmit = (event) => {
-    event.preventDefault();
-    handleRegister(registerEmail, registerPassword); // Llamamos a handleLogin con los datos del formulario
+  //Estados de error
+  const { showError, setError, errorMessage } = useErrorMessage();
+
+
+  const handleLocalRegisterSubmit = async () => {
+    try {
+      await handleLocalRegister(registerName, registerEmail, registerPassword);
+    } catch (error) {
+      setError(error.message); // Manejamos el error aquí, localmente
+    }
   };
     
     return (
@@ -25,7 +37,17 @@ export const RegisterModal = ({ handleRegister, registerEmail, registerPassword,
     
             <h2 className="text-lg font-bold mb-4 text-center">Crear nueva tarea</h2>
     
-            <form onSubmit={handleRegisterSubmit} className="flex flex-col gap-4">
+            <form onSubmit={handleLocalRegisterSubmit} className="flex flex-col gap-4">
+
+
+            <input
+                type="text"
+                placeholder="Email"
+                value={registerName}
+                onChange={(e) => handleChangeRegisterName(e.target.value)}
+                className="border rounded p-2"
+                required
+              />
 
               <input
                 type="text"
@@ -44,6 +66,8 @@ export const RegisterModal = ({ handleRegister, registerEmail, registerPassword,
                 className="border rounded p-2"
                 required
               />
+
+              {showError && <ErrorMessage message={errorMessage} />}
   
               <button 
                 type="submit" 
@@ -60,3 +84,15 @@ export const RegisterModal = ({ handleRegister, registerEmail, registerPassword,
 
     
 }
+
+
+RegisterModal.propTypes = {
+  handleLocalRegister: PropTypes.func.isRequired,
+  closeRegisterModal: PropTypes.func.isRequired,
+  registerName: PropTypes.string.isRequired,
+  handleChangeRegisterName: PropTypes.func.isRequired,
+  registerEmail: PropTypes.string.isRequired,
+  handleChangeRegisterEmail: PropTypes.func.isRequired,
+  registerPassword: PropTypes.string.isRequired,
+  handleChangeRegisterPassword: PropTypes.func.isRequired
+};

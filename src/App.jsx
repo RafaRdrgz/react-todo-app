@@ -10,15 +10,15 @@ import { decodeToken } from '../utils/tokenFuncs';
 const App = () => {
 
   //Importo el hook de autenticación con todo lo necesario para manejar el login y retornando las funciones y estados necesarios
-  const { isLoggedIn, accessToken, errorMessage, handleLogin, handleRegister, handleLogout } = useAuth();
+  const { isLoggedIn, sessionAccessToken, handleLogin, handleRegister, handleLogout } = useAuth();
 
   //Datos a pasar como props
   let userName = "";
   let userId = "";
 
-  if( isLoggedIn && accessToken ){
+  if( isLoggedIn && sessionAccessToken ){
 
-    const decodedToken = decodeToken(accessToken);
+    const decodedToken = decodeToken(sessionAccessToken);
     userId = decodedToken.id;
     userName = decodedToken.name;
 
@@ -27,14 +27,13 @@ const App = () => {
   //Componentes que se van a renderizar dependiendo de los estados
 
   const headerComponent = isLoggedIn ? <Header name={userName} /> : <Header/>; //Por defecto false y null
-  const mainContent = isLoggedIn ? <Dashboard userId={userId} userName={userName} /> : <Login handleLogin={handleLogin} handleRegister={handleRegister} errorMessage = {errorMessage} />; // Por defecto false y null
+  const mainContent = isLoggedIn ? <Dashboard userId={userId} userName={userName} /> : <Login handleLogin={handleLogin} handleLocalRegister={handleRegister} />; // Por defecto cadena vacía
   const footerComponent = isLoggedIn ? <Footer handleLogout={handleLogout} /> : <Footer/>; //Por defecto false y null
 
 
   return (
     <div className="App">
       <div className='contenedor flex flex-col min-h-screen'>
-
 
         {headerComponent}
 

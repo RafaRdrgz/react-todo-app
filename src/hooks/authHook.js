@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { loginService, registerService, logoutService, refreshTokenService } from '../services/authService';
-import { decodeToken } from '../../utils/tokenFuncs';
+import { loginService, registerLocalService, logoutService, refreshTokenService } from '../services/authService';
+import { getAccessToken, getRefreshToken, setAccessToken ,decodeToken } from '../../utils/tokenFuncs';
 
 
 
@@ -16,17 +16,21 @@ const isExpired = (exp) => {
 export const useAuth = () => {
     
 
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [accessToken, setAccessToken] = useState(null);
-    const [errorMessage, setErrorMessage] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [sessionAccessToken, setSessionAccessToken] = useState(null);
 
 
-    useEffect(() => {
+  useEffect(() => { onLoadLogin()}, []);
+
+
+
+  //Intenta loguear al usuario al cargar la aplicación
+  const onLoadLogin = () => {
 
       // Verificamos si el token está en el localStorage al cargar la aplicación
-      const storedAccessToken = localStorage.getItem('accessToken');
-      const refreshToken = localStorage.getItem('refreshToken');
-  
+      const storedAccessToken = getAccessToken();
+      const storedRefreshToken = getRefreshToken();
+
       if (storedAccessToken) {
 
         const decodedToken = decodeToken(storedAccessToken);
@@ -34,78 +38,56 @@ export const useAuth = () => {
         if (!isExpired(decodedToken.exp)) {
 
           setAccessToken(storedAccessToken);
+          setSessionAccessToken(storedAccessToken);
           setIsLoggedIn(true);
         }
 
-      } else if (refreshToken) {
+      } else if (storedRefreshToken) {
 
-        const newAccessToken = refreshTokenService(refreshToken);
+        const newAccessToken = refreshTokenService(storedRefreshToken);
 
         setAccessToken(newAccessToken);
+        setSessionAccessToken(newAccessToken);
         setIsLoggedIn(true);
       }
 
       document.title = 'React To-Do App';
 
-    }, []);
-
-
-
-  // Mostrar error de login
-  const showLoginError = (errorMessage) => {
-    setErrorMessage(errorMessage);
-    setTimeout(() => setErrorMessage(''), 3000); // El mensaje desaparecerá después de 3 segundos
-  };
+  }
 
 
 
   // Función para manejar el login
   const handleLogin = async (email, password) => {
 
-    try {
-
       const newAccessToken = await loginService(email, password);
 
-      setAccessToken(newAccessToken);
+      setSessionAccessToken(newAccessToken);
       setIsLoggedIn(true);
-      setErrorMessage('');
 
-    } catch (error) {
-      showLoginError(error.message);
-    }
   };
 
 
   // Función para manejar el registro
-  const handleRegister = async (email, password) => {
+  const handleLocalRegister = async (name, email, password) => {
 
-    try {
+      const newAccessToken = await registerLocalService(name, email, password);
 
-      const newAccessToken = await loginService(email, password);
-
-      setAccessToken(newAccessToken);
+      setSessionAccessToken(newAccessToken);
       setIsLoggedIn(true);
-      setErrorMessage('');
 
-    } catch (error) {
-      showLoginError(error.message);
-    }
   };
 
   // Función para manejar el logout
   const handleLogout = async (token) => {
-    try {
 
       await logoutService(token);
-
-      setAccessToken(null)
+      setSessionAccessToken(null)
       setIsLoggedIn(false);
-    } catch (error) {
-      console.error('Error al cerrar sesión:', error);
-    }
+
   };
 
 
-  return { isLoggedIn, accessToken, errorMessage, handleLogin, handleRegister, handleLogout };
+  return { isLoggedIn, sessionAccessToken, handleLogin, handleLocalRegister, handleLogout };
 
-}
+} 

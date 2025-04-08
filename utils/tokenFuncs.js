@@ -24,6 +24,13 @@ export const getAccessToken = () => {
    return accessToken;
 }
 
+
+export const getRefreshToken = () => {
+
+    const refreshToken = localStorage.getItem('refreshToken');
+    return refreshToken;
+ }
+
 //Establecer refreshToken
 export const setRefreshToken = (token) => {
 

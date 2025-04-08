@@ -81,6 +81,11 @@ export const logoutService = async (accessToken) => {
 }
 
 
+export const registerLocalService(name, email,password){
+
+}
+
+
 // Función para refrescar el token cuando expira
 export const refreshTokenService = async (refreshToken) => {
 

@@ -1,26 +1,39 @@
 import { useState } from 'react';
 import { useEffect } from "react";
+import { useRegisterModal } from '../hooks/registerModalHook';
+import { useErrorMessage } from '../hooks/showErrorHook';
 import { RegisterModal } from './RegisterModal';
 import { ErrorMessage } from './ErrorMessage';
-import { useRegisterModal } from '../hooks/registerModalHook';
+
 import PropTypes from 'prop-types'; //desestructurar objetos prop
 
 
-const Login = ( { handleLogin, handleRegister, errorMessage } ) => {
+const Login = ( { handleLogin, handleLocalRegister } ) => {
 
+  //Estados de Login
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  //Estados de error
+  const { showError, setError, errorMessage } = useErrorMessage();
 
+  //Estados de registro
   const {isRegisterModalOpen, openRegisterModal, closeRegisterModal,
          registerEmail, handleChangeRegisterEmail,
          registerPassword, handleChangeRegisterPassword } = useRegisterModal();
 
+
+
   
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    handleLogin(email, password); // Llamamos a handleLogin con los datos del formulario
+  const handleSubmit = async () => {
+    try {
+      await handleLogin(email, password);
+    } catch (error) {
+      setError(error.message); // Manejamos el error aquí, localmente
+    }
   };
+
+
 
 
   /* Sign in with google */
@@ -97,8 +110,11 @@ const Login = ( { handleLogin, handleRegister, errorMessage } ) => {
 
                   </div>
 
-                  {/* Mostrar el mensaje de error solo si existe */}
-                  <ErrorMessage message={errorMessage} />
+                  
+
+                  {showError && <ErrorMessage message={errorMessage} />}
+
+                  
 
 
               </div>
@@ -106,7 +122,7 @@ const Login = ( { handleLogin, handleRegister, errorMessage } ) => {
               <div className='login-btns flex flex-col'>
 
                   <div className='login-input flex justify-center items-center mb-4 md:mb-6'>
-                    <button  className="login-btn p-4 border-2 rounded-xl  ubuntu-medium text-lg"type="submit">Login</button>
+                    <button  className="login-btn p-4 border-2 rounded-xl  ubuntu-medium text-lg" type="submit">Login</button>
                   </div>
 
 
@@ -139,8 +155,7 @@ const Login = ( { handleLogin, handleRegister, errorMessage } ) => {
             {/* Modal de registro, solo se muestra si isRegisterModalOpen es true */}
             {isRegisterModalOpen && (
               <RegisterModal
-                  handleRegister={handleRegister}
-                  errorMessage={errorMessage}
+                  handleLocalRegister={handleLocalRegister}
                   closeRegisterModal={closeRegisterModal}
                   registerEmail={registerEmail}
                   handleChangeRegisterEmail={handleChangeRegisterEmail}
