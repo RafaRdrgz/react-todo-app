@@ -20,7 +20,7 @@ const App = () => {
 
     const decodedToken = decodeToken(sessionAccessToken);
     userId = decodedToken.id;
-    userName = decodedToken.name;
+    userName = decodedToken.name.charAt(0).toUpperCase() + decodedToken.name.slice(1);
 
   }
 
