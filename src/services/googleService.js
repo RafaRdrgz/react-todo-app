@@ -10,6 +10,10 @@ export const googleService = async (googleToken) => {
       });
   
       const { accessToken, refreshToken } = response.data;
+
+      if (!accessToken || !refreshToken) {
+        throw new Error("Tokens no recibidos del servidor");
+      }
   
       setAccessToken(accessToken);
       setRefreshToken(refreshToken); // si tu backend lo manda
