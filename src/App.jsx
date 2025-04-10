@@ -33,12 +33,12 @@ const App = () => {
 
   return (
     <div className="App">
-      <div className='contenedor flex flex-col min-h-screen'>
+      <div className='flex flex-col'>
 
         {headerComponent}
 
-      <div className='container py-8'>
-        <main className="main flex-1 flex flex-col justify-center items-center py-6 md:py-8 lg:py-10 xl:py-12 px-4 md:px-8 lg:px-12 xl:px-16">
+      <div className='container flex flex-1 py-8 min-h-screen min-w-screen'>
+        <main className="flex-1 flex flex-col justify-center items-center py-6 md:py-8 lg:py-10 xl:py-12 px-4 md:px-8 lg:px-12 xl:px-16">
           {mainContent}
         </main>
       </div>
