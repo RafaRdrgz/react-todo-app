@@ -1,4 +1,4 @@
-import { API_URL_LOGIN, API_URL_LOGOUT, API_URL_REFRESH } from './urlConfig';
+import { API_URL_LOGIN, API_URL_REGISTER, API_URL_LOGOUT, API_URL_REFRESH } from './urlConfig';
 import { decodeToken , removeTokens, setAccessToken, setRefreshToken } from '../../utils/tokenFuncs';
 import axios from 'axios'; //Peticiones http desce este fichero
 
@@ -38,10 +38,26 @@ export const loginService = async (email, password) => {
 };
 
 
-export const registerLocalService = async(name, user, password) => {
+export const registerLocalService = async(name, email, password) => {
   
+  try{
 
-  
+    // Hacemos la solicitud POST al backend para autenticar al usuario
+    const response = await axios.post(API_URL_REGISTER, {name, email, password, google_id: null, auth_provider: 'local'});
+
+    const {accessToken, refreshToken} = response.data;
+
+    setAccessToken(accessToken);
+    setRefreshToken(refreshToken);
+
+    return accessToken;
+
+  } catch (error){
+
+    console.error('Error al registrar usuario:', error.response?.data || error.message);
+
+  }
+
 }
 
 

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { loginService, registerLocalService, logoutService, refreshTokenService } from '../services/authService';
-import { getAccessToken, getRefreshToken, setAccessToken ,decodeToken } from '../../utils/tokenFuncs';
+import { getAccessToken, getRefreshToken, decodeToken, setAccessToken } from '../../utils/tokenFuncs';
 
 
 
@@ -37,7 +37,6 @@ export const useAuth = () => {
 
         if (!isExpired(decodedToken.exp)) {
 
-          setAccessToken(storedAccessToken);
           setSessionAccessToken(storedAccessToken);
           setIsLoggedIn(true);
         }
@@ -71,7 +70,7 @@ export const useAuth = () => {
   // Función para manejar el registro
   const handleLocalRegister = async (name, email, password) => {
 
-      const newAccessToken = await registerLocalService(name, email, password);
+      const newAccessToken = await registerLocalService(name, email, password, null, "local");
 
       setSessionAccessToken(newAccessToken);
       setIsLoggedIn(true);
