@@ -18,7 +18,7 @@ const TodoList = ({ filteredTasks, deleteTaskById, updateTaskById, handleSearchC
               placeholder="Buscar tarea..."
               value={searchTerm}
               onChange={handleSearchChange}
-              className="border p-2 rounded w-full"
+              className="border p-2 rounded w-full mb-2"
             />
 
             {/* Filtro por estado */}
@@ -27,9 +27,9 @@ const TodoList = ({ filteredTasks, deleteTaskById, updateTaskById, handleSearchC
               onChange={handleFilterChange}
               className="border p-2 rounded mt-2 w-full"
             >
-              <option value="all">Todas</option>
-              <option value="completed">Completadas</option>
-              <option value="pending">Pendientes</option>
+              <option value="all">All</option>
+              <option value="completed">Completed</option>
+              <option value="pending">Pending</option>
             </select>
           </div>
 
@@ -38,7 +38,7 @@ const TodoList = ({ filteredTasks, deleteTaskById, updateTaskById, handleSearchC
           <div className='tasklist'>
             {/* Mostrar mensaje de carga */}
             {loading ? (
-              <p>Loading Tasks...</p>
+              <p className='text-center'>Loading Tasks...</p>
             ) : (
               // Mostrar la lista de tareas si hay tareas
               <>
@@ -48,7 +48,7 @@ const TodoList = ({ filteredTasks, deleteTaskById, updateTaskById, handleSearchC
                     <TodoItem key={task.id} task={task} onDelete={deleteTaskById} onEdit={updateTaskById} />
                   ))
                 ) : (
-                  <p>No hay tareas para mostrar</p>
+                  <p className='text-center'>No tasks to show</p>
                 )}
               </>
             )}

@@ -25,7 +25,12 @@ export const RegisterModal = ({ handleLocalRegister, closeRegisterModal }) => {
     
     return (
 
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+        <div className="fixed inset-0 flex items-center justify-center">
+
+          {/* Overlay de fondo */}
+          <div className="fixed inset-0 bg-gray-800 opacity-50"></div>
+
+          {/* Contenedor del modal (contenido) */}
           <div className="bg-white rounded-xl shadow-lg p-6 w-[90%] max-w-md relative">
             <button 
               onClick={() => closeRegisterModal()} 
@@ -44,7 +49,7 @@ export const RegisterModal = ({ handleLocalRegister, closeRegisterModal }) => {
                 placeholder="Name"
                 value={registerName}
                 onChange={(e) => handleChangeRegisterName(e.target.value)}
-                className="border rounded p-2"
+                className="border-2 border-gray-300 rounded-lg w-full text-center bg-white"
                 required
               />
 
@@ -53,7 +58,7 @@ export const RegisterModal = ({ handleLocalRegister, closeRegisterModal }) => {
                 placeholder="Email"
                 value={registerEmail}
                 onChange={(e) => handleChangeRegisterEmail(e.target.value)}
-                className="border rounded p-2"
+                className="border-2 border-gray-300 rounded-lg w-full text-center bg-white"
                 required
               />
               
@@ -62,7 +67,7 @@ export const RegisterModal = ({ handleLocalRegister, closeRegisterModal }) => {
                 placeholder="password"
                 value={registerPassword}
                 onChange={(e) => handleChangeRegisterPassword(e.target.value)}
-                className="border rounded p-2"
+                className="border-2 border-gray-300 rounded-lg w-full text-center bg-white"
                 required
               />
 
@@ -70,7 +75,7 @@ export const RegisterModal = ({ handleLocalRegister, closeRegisterModal }) => {
   
               <button 
                 type="submit" 
-                className="bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+                className="submitRegisterBtn p-4 border-2 rounded-xl  ubuntu-medium text-lg"
               >
                 Register
               </button>

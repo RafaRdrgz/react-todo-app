@@ -37,10 +37,11 @@ const App = () => {
 
         {headerComponent}
 
+      <div className='container py-8'>
         <main className="main flex-1 flex flex-col justify-center items-center py-6 md:py-8 lg:py-10 xl:py-12 px-4 md:px-8 lg:px-12 xl:px-16">
           {mainContent}
         </main>
-
+      </div>
         {footerComponent}
 
       </div>

@@ -41,7 +41,12 @@ const CreateTaskModal = ({addTask, closeModal}) => {
 
   return (
 
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+    <div className="fixed inset-0 flex items-center justify-center">
+
+      {/* Overlay de fondo */}
+      <div className="fixed inset-0 bg-gray-800 opacity-50"></div>
+
+      {/* Contenedor del modal (contenido) */}
       <div className="bg-white rounded-xl shadow-lg p-6 w-[90%] max-w-md relative">
         <button 
           onClick={closeModal} 
@@ -50,22 +55,24 @@ const CreateTaskModal = ({addTask, closeModal}) => {
           <X size={24} />
         </button>
 
-        <h2 className="text-lg font-bold mb-4 text-center">Crear nueva tarea</h2>
+        <h2 className="text-lg font-bold mb-4 text-center">Add new task</h2>
 
         <form onSubmit={(e) => handleAddTask(e)} className="flex flex-col gap-4">
+
           <input
             type="text"
-            placeholder="Título"
+            placeholder="Title"
             value={title}
             onChange={(e) => handleChangeTitle(e.target.value)}
-            className="border rounded p-2"
+            className="p-1 border-2 border-gray-300 rounded-lg w-full text-center bg-white"
             required
           />
+          
           <textarea
-            placeholder="Descripción"
+            placeholder="Description"
             value={description}
             onChange={(e) => handleChangeDescription(e.target.value)}
-            className="border rounded p-2"
+            className="p-2 w-full border-2 rounded-lg border-gray-300 text-center bg-white"
           />
 
         <label className="flex items-center gap-2">
@@ -73,16 +80,17 @@ const CreateTaskModal = ({addTask, closeModal}) => {
             type="checkbox"
             checked={completed}
             onChange={() =>toggleCompleted()}
+            className='h-6 w-6 rounded-sm checkbox-completed'
         />
-        Marcar como completada
+        Check as completed
         </label>
 
         {showError && <ErrorMessage message={errorMessage} />}
           <button 
             type="submit" 
-            className="bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+            className="addTaskBtn p-4 border-2 rounded-xl  ubuntu-medium text-lg"
           >
-            Crear
+            Add
           </button>
         </form>
       </div>

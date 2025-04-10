@@ -23,6 +23,7 @@ const Dashboard = ({ userName }) => {
     return (
 
       <main className='dashboard rounded-xl shadow-lg py-2 md:py-6 lg:py-10 px-8 md:px-16 lg:px-20'>
+
         <h2 className='ubuntu-bold text-xl text-center mb-8'>{ userName }&apos;s Dashboard</h2>
 
         <div className='dashItems flex flex-col justify-center align-center'>
@@ -38,7 +39,8 @@ const Dashboard = ({ userName }) => {
                 filter={filter}
                 loading={loading}
               />
-        </div>
+          </div>
+        
       </main>
 
     );

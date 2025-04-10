@@ -30,7 +30,7 @@ const TodoItem = ({ task, onDelete, onEdit }) => {
               type="text"
               value={newTitle}
               onChange={(e) => handleChangeTitle(e.target.value)}
-              className="border-b-2 border-gray-300 rounded-lg w-full text-center bg-white"
+              className="border-2 border-gray-300 rounded-lg w-full text-center bg-white"
             />
           </div>
         ) : (

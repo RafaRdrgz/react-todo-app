@@ -66,12 +66,12 @@
 
 }
 
-.login-btn, .register-btn, .logout-btn{
+.login-btn, .register-btn, .logout-btn, .addTaskBtn, .createTaskBtn{
 
   background-color: var(--mint-green-2);
 }
 
-.login-btn:hover, .register-btn:hover, .logout-btn:hover{
+.login-btn:hover, .register-btn:hover, .logout-btn:hover, .addTaskBtn:hover, .createTaskBtn:hover{
 
   background-color: var(--mint-green);
   cursor: pointer;
@@ -130,18 +130,5 @@
 
 .edit:hover, .save:hover{
   background-color: var(--mint-green);
-  cursor: pointer;
-}
-
-
-.createTaskBtn {
-
-  background-color: var(--mint-green);
-
-}
-
-.createTaskBtn:hover{
-
-  background-color: var(--mint-green-2);
   cursor: pointer;
 }
