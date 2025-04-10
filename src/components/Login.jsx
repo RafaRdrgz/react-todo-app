@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { useEffect } from "react";
 import { useErrorMessage } from '../hooks/showErrorHook';
-import { useModal } from '../hooks/showErrorHook';
-import { RegisterModal } from './RegisterModal';
-import { ErrorMessage } from './ErrorMessage';
+import { useModal } from '../hooks/modalHook';
+import  RegisterModal  from './RegisterModal';
+import  ErrorMessage  from './ErrorMessage';
 
 import PropTypes from 'prop-types'; //desestructurar objetos prop
 
@@ -22,8 +22,9 @@ const Login = ( { handleLogin, handleLocalRegister } ) => {
 
 
   
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
     try {
+      e.preventDefault();
       await handleLogin(email, password);
     } catch (error) {
       setError(error.message); // Manejamos el error aquí, localmente
@@ -66,7 +67,7 @@ const Login = ( { handleLogin, handleLocalRegister } ) => {
 
           <h2 className='ubuntu-bold text-xl text-center mb-8'>Login:</h2>
 
-          <form className='login-form flex flex-col' onSubmit={handleSubmit}>
+          <form className='login-form flex flex-col' onSubmit={(e) => handleSubmit(e)}>
 
               <div className='login-inputs mb-8 flex flex-col justify-center items-center'>
 

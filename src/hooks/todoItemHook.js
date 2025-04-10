@@ -22,11 +22,11 @@ const useTodoItem = (task, onDelete, onEdit) => {
 
 
 //Cambia de completado a no completado y viceversa
-    const toggleComplete = () => {
+    const toggleComplete = async () => {
  
         const newStatus = !completed;
         setCompleted(newStatus);
-        onEdit(task.id, newTitle, newDescription, newStatus);
+        await onEdit(task.id, { title: newTitle, description: newDescription, completed: newStatus});
 
       };
     
@@ -42,8 +42,8 @@ const useTodoItem = (task, onDelete, onEdit) => {
     };
     
 
-    const handleSaveClick = () => {
-        onEdit(task.id, newTitle, newDescription); // Llama a la función de edición en el padre
+    const handleSaveClick = async () => {
+        await onEdit(task.id, { title: newTitle, description: newDescription, completed: completed}); // Llama a la función de edición en el padre
         setEditing(false); // Desactiva el modo de edición
     };
     
@@ -55,9 +55,9 @@ const useTodoItem = (task, onDelete, onEdit) => {
     };
 
 
-    const handleDeleteClick = () =>{
+    const handleDeleteClick = async() =>{
 
-        onDelete(task.id);
+        await onDelete(task.id);
     }
 
 

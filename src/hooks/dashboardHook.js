@@ -13,7 +13,6 @@ export const useTaskList = () => {
     const [filter, setFilter] = useState("all");  // Estado para el filtro (completado o pendiente)
 
 
-
     useEffect(() => {
 
 
@@ -48,7 +47,7 @@ export const useTaskList = () => {
 
       try {
 
-        const {title, description, completed } = newTaskData;
+        const { title, description, completed } = newTaskData;
 
         const newTask = await createTask(title,description,completed);
         setTasks((prevTasks) => [ ... prevTasks, newTask ]); // Añadir la nueva tarea al estado

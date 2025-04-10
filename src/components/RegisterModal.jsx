@@ -5,7 +5,7 @@ import { useErrorMessage } from '../hooks/showErrorHook';
 import { X } from '@phosphor-icons/react';
 
 
-export const RegisterModal = ({ handleLocalRegister, closeModal }) => {
+export const RegisterModal = ({ handleLocalRegister, closeRegisterModal }) => {
 
 
   //Estados de error
@@ -14,8 +14,9 @@ export const RegisterModal = ({ handleLocalRegister, closeModal }) => {
           handleChangeRegisterName, handleChangeRegisterEmail, handleChangeRegisterPassword} = useRegisterModal();
 
 
-  const handleLocalRegisterSubmit = async () => {
+  const handleRegisterSubmit = async (e) => {
     try {
+      e.preventDefault();
       await handleLocalRegister(registerName, registerEmail, registerPassword);
     } catch (error) {
       setError(error.message); // Manejamos el error aquí, localmente
@@ -27,20 +28,20 @@ export const RegisterModal = ({ handleLocalRegister, closeModal }) => {
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
           <div className="bg-white rounded-xl shadow-lg p-6 w-[90%] max-w-md relative">
             <button 
-              onClick={closeModal} 
+              onClick={() => closeRegisterModal()} 
               className="absolute top-4 right-4 text-gray-600 hover:text-black"
             >
               <X size={24} />
             </button>
     
-            <h2 className="text-lg font-bold mb-4 text-center">Crear nueva tarea</h2>
+            <h2 className="text-lg font-bold mb-4 text-center">Register new user</h2>
     
-            <form onSubmit={() => handleLocalRegisterSubmit()} className="flex flex-col gap-4">
+            <form onSubmit={(e) => handleRegisterSubmit(e)} className="flex flex-col gap-4">
 
 
             <input
                 type="text"
-                placeholder="Email"
+                placeholder="Name"
                 value={registerName}
                 onChange={(e) => handleChangeRegisterName(e.target.value)}
                 className="border rounded p-2"
@@ -58,7 +59,7 @@ export const RegisterModal = ({ handleLocalRegister, closeModal }) => {
               
               <input
                 type="password"
-                placeholder="Título"
+                placeholder="password"
                 value={registerPassword}
                 onChange={(e) => handleChangeRegisterPassword(e.target.value)}
                 className="border rounded p-2"
@@ -71,7 +72,7 @@ export const RegisterModal = ({ handleLocalRegister, closeModal }) => {
                 type="submit" 
                 className="bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
               >
-                Crear
+                Register
               </button>
             </form>
           </div>
@@ -86,5 +87,7 @@ export const RegisterModal = ({ handleLocalRegister, closeModal }) => {
 
 RegisterModal.propTypes = {
   handleLocalRegister: PropTypes.func.isRequired,
-  closeModal: PropTypes.func.isRequired,
+  closeRegisterModal: PropTypes.func.isRequired,
 };
+
+export default RegisterModal;

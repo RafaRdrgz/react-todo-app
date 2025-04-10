@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { loginService, registerLocalService, logoutService, refreshTokenService } from '../services/authService';
+import { loginService, logoutService, refreshTokenService } from '../services/authService';
+import { registerLocalService } from '../services/registerService';
 import { getAccessToken, getRefreshToken, decodeToken, setAccessToken } from '../../utils/tokenFuncs';
 
 
@@ -20,12 +21,20 @@ export const useAuth = () => {
   const [sessionAccessToken, setSessionAccessToken] = useState(null);
 
 
-  useEffect(() => { onLoadLogin()}, []);
+  useEffect(() => { 
+
+    document.title = 'React To-Do App';
+
+    const authTry = async () => { await onLoadLogin();}
+
+    authTry();
+    
+  }, []);
 
 
 
   //Intenta loguear al usuario al cargar la aplicación
-  const onLoadLogin = () => {
+  const onLoadLogin = async () => {
 
       // Verificamos si el token está en el localStorage al cargar la aplicación
       const storedAccessToken = getAccessToken();
@@ -43,14 +52,14 @@ export const useAuth = () => {
 
       } else if (storedRefreshToken) {
 
-        const newAccessToken = refreshTokenService(storedRefreshToken);
+        const newAccessToken = await refreshTokenService(storedRefreshToken);
 
         setAccessToken(newAccessToken);
         setSessionAccessToken(newAccessToken);
         setIsLoggedIn(true);
       }
 
-      document.title = 'React To-Do App';
+
 
   }
 
@@ -72,15 +81,16 @@ export const useAuth = () => {
 
       const newAccessToken = await registerLocalService(name, email, password, null, "local");
 
+      console.log(newAccessToken);
       setSessionAccessToken(newAccessToken);
       setIsLoggedIn(true);
 
   };
 
   // Función para manejar el logout
-  const handleLogout = async (token) => {
+  const handleLogout = async () => {
 
-      await logoutService(token);
+      await logoutService(sessionAccessToken);
       setSessionAccessToken(null)
       setIsLoggedIn(false);
 

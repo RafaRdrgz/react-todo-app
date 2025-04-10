@@ -12,6 +12,8 @@ const TodoItem = ({ task, onDelete, onEdit }) => {
         } = useTodoItem(task, onDelete, onEdit);
 
 
+  console.log(task);
+
   return (
     <div className={`todo-item flex flex-col justify-center p-4 my-2 md:my-4 rounded-lg shadow-md ${completed ? 'completed' : 'pending'}`}>
       <h4 className="flex justify-around align-center mb-3 space-x-4">
@@ -45,7 +47,7 @@ const TodoItem = ({ task, onDelete, onEdit }) => {
         />
       ) : (<>
           <p className="ubuntu-light mb-1">{task.description}</p>
-          <p className="date ubuntu-light text-sm">Creado: {new Date(task.createdAt).toLocaleDateString()}</p>
+          <p className="date ubuntu-light text-sm">Creado: {new Date(task.created_at).toLocaleDateString()}</p>
           </>
       )}
       </div>
@@ -101,7 +103,7 @@ TodoItem.propTypes = {
     title: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
     completed: PropTypes.bool.isRequired,
-    createdAt: PropTypes.string.isRequired,
+    created_at: PropTypes.string.isRequired,
   }).isRequired,
   onDelete: PropTypes.func.isRequired,
   onEdit: PropTypes.func.isRequired

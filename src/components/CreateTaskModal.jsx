@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { X } from '@phosphor-icons/react';
 import { useCreateTaskModal } from '../hooks/createTaskModalHook';
-import { useErrorHook } from '../hooks/showErrorHook';
+import { useErrorMessage} from '../hooks/showErrorHook';
 import ErrorMessage from './ErrorMessage';
 
 const CreateTaskModal = ({addTask, closeModal}) => {
@@ -13,11 +13,12 @@ const CreateTaskModal = ({addTask, closeModal}) => {
 
 
   //Estados de error
-  const { showError, setError, errorMessage } = useErrorHook();
+  const { showError, setError, errorMessage } = useErrorMessage();
 
           
-  const handleAddTask = async () => {
+  const handleAddTask = async (e) => {
 
+      e.preventDefault();
       try{
 
         if (!title.trim()) { throw new Error("Title needed")}
@@ -51,7 +52,7 @@ const CreateTaskModal = ({addTask, closeModal}) => {
 
         <h2 className="text-lg font-bold mb-4 text-center">Crear nueva tarea</h2>
 
-        <form onSubmit={() => handleAddTask()} className="flex flex-col gap-4">
+        <form onSubmit={(e) => handleAddTask(e)} className="flex flex-col gap-4">
           <input
             type="text"
             placeholder="Título"

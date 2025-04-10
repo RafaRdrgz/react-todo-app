@@ -1,4 +1,4 @@
-import { API_URL_LOGIN, API_URL_REGISTER, API_URL_LOGOUT, API_URL_REFRESH } from './urlConfig';
+import { API_URL_LOGIN, API_URL_LOGOUT, API_URL_REFRESH } from './urlConfig';
 import { decodeToken , removeTokens, setAccessToken, setRefreshToken } from '../../utils/tokenFuncs';
 import axios from 'axios'; //Peticiones http desce este fichero
 
@@ -38,41 +38,20 @@ export const loginService = async (email, password) => {
 };
 
 
-export const registerLocalService = async(name, email, password) => {
-  
-  try{
-
-    // Hacemos la solicitud POST al backend para autenticar al usuario
-    const response = await axios.post(API_URL_REGISTER, {name, email, password, google_id: null, auth_provider: 'local'});
-
-    const {accessToken, refreshToken} = response.data;
-
-    setAccessToken(accessToken);
-    setRefreshToken(refreshToken);
-
-    return accessToken;
-
-  } catch (error){
-
-    console.error('Error al registrar usuario:', error.response?.data || error.message);
-
-  }
-
-}
-
-
 //Función para cerrar sesión
 export const logoutService = async (accessToken) => {
 
   try {
 
-      //console.log('Token enviado en logout:', accessToken);
+    if (!accessToken || typeof accessToken !== 'string') {
+      throw new Error('Token inválido o no proporcionado');
+    }
 
-      if (!accessToken) {
-        throw new Error('No token available');
-      }
+    const decodedToken = decodeToken(accessToken);
+    if (!decodedToken || !decodedToken.id) {
+      throw new Error('No se pudo decodificar el token');
+    }
 
-      const decodedToken = decodeToken(accessToken); // Obtiene el token del localStorage
       const userId = decodedToken.id; //extraigo el id del usuario a hacer logout
 
       const logoutResponse = await axios.post( API_URL_LOGOUT,

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 
-export const useErrorHook = () => {
+export const useErrorMessage = () => {
 
 
     const [showError, setShowError] = useState(false);

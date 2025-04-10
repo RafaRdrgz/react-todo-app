@@ -7,7 +7,6 @@ const TodoList = ({ filteredTasks, deleteTaskById, updateTaskById, handleSearchC
                     handleFilterChange, searchTerm, filter, loading }) => {
 
 
-
     return (
 
       <div>
@@ -36,7 +35,6 @@ const TodoList = ({ filteredTasks, deleteTaskById, updateTaskById, handleSearchC
 
 
 
-
           <div className='tasklist'>
             {/* Mostrar mensaje de carga */}
             {loading ? (
@@ -55,7 +53,6 @@ const TodoList = ({ filteredTasks, deleteTaskById, updateTaskById, handleSearchC
               </>
             )}
           </div>
-
 
       </div>
     );
