@@ -26,7 +26,7 @@ const App = () => {
 
   //Componentes que se van a renderizar dependiendo de los estados
 
-  const headerComponent = isLoggedIn ? <Header name={userName} /> : <Header/>; //Por defecto false y null
+  const headerComponent = isLoggedIn ? <Header userName={userName} /> : <Header/>; //Por defecto false y null
   const mainContent = isLoggedIn && sessionAccessToken && isTokenValid(sessionAccessToken) ? <Dashboard userId={userId} userName={userName} /> : <Login handleLogin={handleLogin} handleLocalRegister={handleLocalRegister} />; // Por defecto cadena vacía
   const footerComponent = isLoggedIn ? <Footer handleLogout={handleLogout} /> : <Footer/>; //Por defecto false y null
 
@@ -36,7 +36,7 @@ const App = () => {
 
         {headerComponent}
 
-        <main className="main container min-h-screen min-w-screen p-12 
+        <main className="main container min-h-screen min-w-screen py-14 lg:py-20
                          flex flex-col justify-center items-center">
           {mainContent}
         </main>
