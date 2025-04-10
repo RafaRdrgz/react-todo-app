@@ -8,7 +8,7 @@ import  ErrorMessage  from './ErrorMessage';
 import PropTypes from 'prop-types'; //desestructurar objetos prop
 
 
-const Login = ( { handleLogin, handleLocalRegister } ) => {
+const Login = ( { handleLogin, handleLocalRegister, handleGoogle } ) => {
 
   //Estados de Login
   const [email, setEmail] = useState('');
@@ -41,12 +41,12 @@ const Login = ( { handleLogin, handleLocalRegister } ) => {
       if (window.google) {
         window.google.accounts.id.initialize({
           client_id: "TU_CLIENT_ID_AQUÍ", // Reemplázalo cuando tengas uno
-          callback: (response) => console.log("ID Token de Google:", response.credential),
+          callback: (response) => { handleGoogle(response.credential) }
         });
 
         window.google.accounts.id.renderButton(
           document.getElementById("google-login-button"),
-          { theme: "filled_black", size: "large", text: "signin_with", locale: "en" }
+          { theme: "filled_black", size: "large", text: "continue_with", locale: "en" }
         );
       }
     };
@@ -57,7 +57,7 @@ const Login = ( { handleLogin, handleLocalRegister } ) => {
       window.addEventListener("load", initializeGoogleLogin);
       return () => window.removeEventListener("load", initializeGoogleLogin);
     }
-  }, []);
+  });
 
 
 
@@ -166,6 +166,7 @@ Login.propTypes = {
 
   handleLogin: PropTypes.func.isRequired,
   handleLocalRegister: PropTypes.func.isRequired,
+  handleGoogle: PropTypes.func.isRequired,
   errorMessage: PropTypes.string
 };
 

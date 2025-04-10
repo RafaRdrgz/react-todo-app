@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { loginService, logoutService, refreshTokenService } from '../services/authService';
+import { googleService } from '../services/googleService';
 import { registerLocalService } from '../services/registerService';
 import { getAccessToken, getRefreshToken, decodeToken, setAccessToken } from '../../utils/tokenFuncs';
 
@@ -87,6 +88,16 @@ export const useAuth = () => {
 
   };
 
+
+
+
+  const handleGoogle = async (googleToken) => {
+      const accessToken = await googleService(googleToken);
+      setSessionAccessToken(accessToken);
+      setIsLoggedIn(true);
+  };
+  
+
   // Función para manejar el logout
   const handleLogout = async () => {
 
@@ -97,6 +108,6 @@ export const useAuth = () => {
   };
 
 
-  return { isLoggedIn, sessionAccessToken, handleLogin, handleLocalRegister, handleLogout };
+  return { isLoggedIn, sessionAccessToken, handleLogin, handleGoogle, handleLocalRegister, handleLogout };
 
 } 

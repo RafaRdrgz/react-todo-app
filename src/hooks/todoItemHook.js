@@ -31,10 +31,10 @@ const useTodoItem = (task, onDelete, onEdit) => {
       };
     
       
-    const handleChangeTitle = (newValue) => { setNewTitle(newValue); }
+    const handleChangeTitle = (newValue) => { setNewTitle(newValue.charAt(0).toUpperCase() + newValue.slice(1)); }
 
 
-    const handleChangeDescription = (newValue) => { setNewDescription(newValue); }
+    const handleChangeDescription = (newValue) => { setNewDescription(newValue.charAt(0).toUpperCase() + newValue.slice(1)); }
 
 
     const handleEditClick = () => {

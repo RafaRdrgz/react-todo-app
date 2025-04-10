@@ -7,9 +7,9 @@ export const useCreateTaskModal = () => {
   const [description, setDescription] = useState('');
   const [completed, setCompleted ] = useState(false);
 
-  const handleChangeTitle = (newValue) => { setTitle(newValue); }
+  const handleChangeTitle = (newValue) => { setTitle(newValue.charAt(0).toUpperCase() + newValue.slice(1)); }
 
-  const handleChangeDescription = (newValue) => { setDescription(newValue); }
+  const handleChangeDescription = (newValue) => { setDescription(newValue.charAt(0).toUpperCase() + newValue.slice(1)); }
 
   const toggleCompleted = () => {
  
