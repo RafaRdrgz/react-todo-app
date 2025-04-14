@@ -117,6 +117,7 @@ export const useAuth = () => {
   const handleGoogleLogout = async () =>{
 
     await googleLogoutService(sessionGoogleToken);
+    await logoutService(sessionAccessToken);
     setSessionAccessToken(null);
     setSessionGoogleToken(null);
     setIsLoggedIn(false);
