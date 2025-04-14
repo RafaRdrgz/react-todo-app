@@ -12,7 +12,6 @@ const TodoItem = ({ task, onDelete, onEdit }) => {
         } = useTodoItem(task, onDelete, onEdit);
 
 
-  console.log(task);
 
   return (
     <div className={`todo-item flex flex-col justify-center p-4 my-2 md:my-4 rounded-lg shadow-md ${completed ? 'completed' : 'pending'}`}>

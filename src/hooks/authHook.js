@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { loginService, logoutService, refreshTokenService } from '../services/authService';
-import { googleService } from '../services/googleService';
+import { googleLoginService, googleLogoutService } from '../services/googleService';
 import { registerLocalService } from '../services/registerService';
 import { getAccessToken, getRefreshToken, decodeToken, setAccessToken } from '../../utils/tokenFuncs';
 
@@ -20,6 +20,7 @@ export const useAuth = () => {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [sessionAccessToken, setSessionAccessToken] = useState(null);
+  const [sessionGoogleToken, setSessionGoogleToken] = useState(null);
 
 
   useEffect(() => { 
@@ -48,6 +49,7 @@ export const useAuth = () => {
         if (!isExpired(decodedToken.exp)) {
 
           setSessionAccessToken(storedAccessToken);
+          setSessionGoogleToken(null);
           setIsLoggedIn(true);
         }
 
@@ -57,6 +59,7 @@ export const useAuth = () => {
 
         setAccessToken(newAccessToken);
         setSessionAccessToken(newAccessToken);
+        setSessionGoogleToken(null);
         setIsLoggedIn(true);
       }
 
@@ -72,6 +75,7 @@ export const useAuth = () => {
       const newAccessToken = await loginService(email, password);
 
       setSessionAccessToken(newAccessToken);
+      setSessionGoogleToken(null);
       setIsLoggedIn(true);
 
   };
@@ -84,6 +88,7 @@ export const useAuth = () => {
 
       console.log(newAccessToken);
       setSessionAccessToken(newAccessToken);
+      setSessionGoogleToken(null);
       setIsLoggedIn(true);
 
   };
@@ -91,9 +96,10 @@ export const useAuth = () => {
 
 
 
-  const handleGoogle = async (googleToken) => {
-      const accessToken = await googleService(googleToken);
+  const handleGoogleLogin = async (googleToken) => {
+      const accessToken = await googleLoginService(googleToken);
       setSessionAccessToken(accessToken);
+      setSessionGoogleToken(googleToken);
       setIsLoggedIn(true);
   };
   
@@ -102,12 +108,22 @@ export const useAuth = () => {
   const handleLogout = async () => {
 
       await logoutService(sessionAccessToken);
-      setSessionAccessToken(null)
+      setSessionAccessToken(null);
+      setSessionGoogleToken(null);
       setIsLoggedIn(false);
 
   };
 
+  const handleGoogleLogout = async () =>{
 
-  return { isLoggedIn, sessionAccessToken, handleLogin, handleGoogle, handleLocalRegister, handleLogout };
+    await googleLogoutService(sessionGoogleToken);
+    setSessionAccessToken(null);
+    setSessionGoogleToken(null);
+    setIsLoggedIn(false);
+
+  }
+
+
+  return { isLoggedIn, sessionAccessToken, sessionGoogleToken, handleLogin, handleGoogleLogin, handleGoogleLogout, handleLocalRegister, handleLogout };
 
 } 

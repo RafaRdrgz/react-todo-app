@@ -10,7 +10,7 @@ import { decodeToken, isTokenValid } from '../utils/tokenFuncs';
 const App = () => {
 
   //Importo el hook de autenticación con todo lo necesario para manejar el login y retornando las funciones y estados necesarios
-  const { isLoggedIn, sessionAccessToken, handleLogin, handleGoogle, handleLocalRegister, handleLogout } = useAuth();
+  const { isLoggedIn, sessionAccessToken, sessionGoogleToken, handleLogin, handleGoogleLogin, handleGoogleLogout, handleLocalRegister, handleLogout } = useAuth();
 
   //Datos a pasar como props
   let userName = "";
@@ -27,8 +27,12 @@ const App = () => {
   //Componentes que se van a renderizar dependiendo de los estados
 
   const headerComponent = isLoggedIn ? <Header userName={userName} /> : <Header/>; //Por defecto false y null
-  const mainContent = isLoggedIn && sessionAccessToken && isTokenValid(sessionAccessToken) ? <Dashboard userId={userId} userName={userName} /> : <Login handleLogin={handleLogin} handleLocalRegister={handleLocalRegister} handleGoogle={handleGoogle} />; // Por defecto cadena vacía
-  const footerComponent = isLoggedIn ? <Footer handleLogout={handleLogout} /> : <Footer/>; //Por defecto false y null
+  const mainContent = isLoggedIn && sessionAccessToken && isTokenValid(sessionAccessToken) ? <Dashboard userId={userId} userName={userName} /> : <Login handleLogin={handleLogin} handleLocalRegister={handleLocalRegister} handleGoogleLogin={handleGoogleLogin} handleGoogleLogout={handleGoogleLogout} />; // Por defecto cadena vacía
+  let footerComponent;
+  
+  if(isLoggedIn && sessionAccessToken && sessionGoogleToken){footerComponent = <Footer handleLogout={handleGoogleLogout} />}
+  else if (isLoggedIn && sessionAccessToken && !sessionGoogleToken ){ footerComponent = <Footer handleLogout={handleLogout}/> }
+  else{ footerComponent = <Footer/>}
 
 
   return (
@@ -39,7 +43,9 @@ const App = () => {
         <main className="main container min-h-screen min-w-screen py-14 lg:py-20
                          flex flex-col justify-center items-center">
           {mainContent}
+          
         </main>
+
         {footerComponent}
 
 
