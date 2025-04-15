@@ -75,7 +75,7 @@ const Login = ( { handleLogin, handleLocalRegister, handleGoogleLogin } ) => {
 
               <div className='login-inputs mb-8 flex flex-col justify-center items-center'>
 
-                  <div className='login-input flex mb-4 md:mb-6'>
+                  <div className='login-input flex mb-4 md:mb-6 justify-between'>
 
                     <label htmlFor="email" className="ubuntu-regular text-regular p-0 md:p-2 ml-6 w-32 flex items-center">
                       <i className="ph ph-at mr-2 text-2xl"></i>
