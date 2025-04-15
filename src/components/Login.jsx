@@ -42,7 +42,8 @@ const Login = ( { handleLogin, handleLocalRegister, handleGoogleLogin } ) => {
       if (window.google) {
         window.google.accounts.id.initialize({
           client_id: "487273685560-69iqouflgpisjj0f0839vso1dsj30tc5.apps.googleusercontent.com", // Reemplázalo cuando tengas uno
-          callback: (response) => { handleGoogleLogin(response.credential) }
+          callback: (response) => { handleGoogleLogin(response.credential) },
+          ux_mode: "popup"
         });
 
         window.google.accounts.id.renderButton(
@@ -60,7 +61,7 @@ const Login = ( { handleLogin, handleLocalRegister, handleGoogleLogin } ) => {
       window.addEventListener("load", initializeGoogleLogin);
       return () => window.removeEventListener("load", initializeGoogleLogin);
     }
-  });
+  }, []);
 
 
 
