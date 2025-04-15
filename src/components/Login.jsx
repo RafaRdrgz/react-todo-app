@@ -128,7 +128,7 @@ const Login = ( { handleLogin, handleLocalRegister, handleGoogleLogin } ) => {
                   </div>
 
 
-                  <div id="google-login-button" className="g_id_signin mb-4 md:mb-6"></div>
+                  <div id="google-login-button text-center" className="g_id_signin mb-4 md:mb-6"></div>
 
 
 
