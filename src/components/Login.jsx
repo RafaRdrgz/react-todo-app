@@ -67,7 +67,7 @@ const Login = ( { handleLogin, handleLocalRegister, handleGoogleLogin } ) => {
 
   return (
 
-      <div className='login  flex-1 flex flex-col rounded-xl shadow-lg py-2 md:py-8 lg:py-10 px-8 md:px-16 lg:px-20'>
+      <div className='login flex-1 flex flex-col rounded-xl shadow-lg py-2 md:py-8 lg:py-10 px-8 md:px-16 lg:px-20'>
 
           <h2 className='ubuntu-bold text-xl text-center mb-8'>Login:</h2>
 
@@ -121,7 +121,7 @@ const Login = ( { handleLogin, handleLocalRegister, handleGoogleLogin } ) => {
 
               </div>
 
-              <div className='login-btns flex flex-col'>
+              <div className='login-btns flex flex-col justify-center items-center'>
 
                   <div className='login-input flex justify-center items-center mb-4 md:mb-6'>
                     <button  className="login-btn p-4 border-2 rounded-xl  ubuntu-medium text-lg" type="submit">Login</button>
