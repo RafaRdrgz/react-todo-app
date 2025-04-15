@@ -40,7 +40,7 @@ const App = () => {
 
         {headerComponent}
 
-        <main className="main h-full w-full py-14 lg:py-20
+        <main className="main min-h-screen w-full py-14 lg:py-20
                          flex flex-col justify-center items-center">
           {mainContent}
           
