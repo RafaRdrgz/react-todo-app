@@ -8,7 +8,7 @@ const Header = ({userName}) => {
           
           (
           
-            <header id='loginHeader' className="header fixed top-0 left-0 w-full h-10 md:h-14 lg:h-18 flex justify-around items-center">
+            <header id='loginHeader' className="header fixed top-0 left-0 w-creen h-10 md:h-14 lg:h-18 flex justify-around items-center">
               <h1 className='ubuntu-bold text-white text-2xl'>
                 <p>To-Do App</p>
               </h1>
