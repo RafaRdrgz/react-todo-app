@@ -58,6 +58,7 @@
 .main{
 
     background-color: var(--rose-quartz);
+    min-height: 100%;
 }
 
 .login{
